@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="com_dailystats" basedir="." default="build_install_zip">
+	<property file="./build.properties" /><!-- contains component version number -->
+
+	<property name="artifact.name" value="dailystats" />
+	<property name="joomla.root"
+		value="D:\Development\web\htdocs\plusconscient15_dev" />
+	<property name="src"
+		value="${joomla.root}\administrator\components\com_${artifact.name}" />
+	<property name="front.src"
+		value="${joomla.root}\components\com_${artifact.name}" />
+	<property name="packaging.dir"
+		value="${joomla.root}\tmp\packaging\com_${artifact.name}" />
+	<property name="install.zip.file.dest"
+		value="D:\Development\web\htdocs\plusconscient15_int\attachments"
+		override="true" />
+	<property name="version">v${extension_version}</property><!-- ${extension_version defined in ./build.properties -->
+
+	<target name="copy_to_front_dir" description="Copies files to front component src dir">
+		<delete dir="${front.src}" includeemptydirs="true" verbose="false" />
+		<copy todir="${front.src}" overwrite="true">
+			<fileset dir="${src}">
+				<include name="${artifact.name}.php" />
+				<include name="index.html" />
+			</fileset>
+			<fileset dir="${src}/site">
+				<include name="views/**" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="build_packaging_dir" description="Copies files to component packaging dir">
+		<delete dir="${packaging.dir}" includeemptydirs="true" verbose="false" />
+		<copy todir="${packaging.dir}/admin" overwrite="true">
+			<fileset dir="${src}">
+				<include name="${artifact.name}.php" />
+				<include name="dailyStatsConstants.php" />
+				<include name="index.html" />
+				<include name="helpers/*" />
+				<include name="assets/*" />
+				<include name="language/**" />
+				<!-- include the sys.ini file used to translate the COM_DAILYSTATS_MENU in dailystats.xml -->
+				<include name="js/*" />
+				<include name="dao/*" />
+			</fileset>
+		</copy>
+		<copy todir="${packaging.dir}" overwrite="true">
+			<filterchain>
+				<expandproperties /><!-- applies Phing properties to joomla xml files -->
+			</filterchain>
+			<fileset dir="${src}">
+				<include name="${artifact.name}.xml" />
+				<include name="joomla15.xml" />
+				<include name="site/views/**" />
+			</fileset>
+		</copy>
+		<copy todir="${packaging.dir}/site" overwrite="true">
+			<fileset dir="${src}">
+				<include name="${artifact.name}.php" />
+				<include name="index.html" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="build_install_zip" depends="copy_to_front_dir, build_packaging_dir"
+		description="build the install zip">
+		<delete file="${install.zip.file.dest}/com_${artifact.name}_${version}.zip" />
+		<zip destfile="${install.zip.file.dest}/com_${artifact.name}_${version}.zip">
+			<fileset dir="${packaging.dir}">
+				<include name="**/**" />
+			</fileset>
+		</zip>
+	</target>
+</project>

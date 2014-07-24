@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Daily Stats">
+		<message>
+		</message>
+	</layout>
+	<state>
+		<name>Daily Stats</name>
+		<description></description>
+
+		<!-- Joomla 1.6 version -->
+		<config>
+			<fields name="params">
+				<fieldset name="basic">
+					<field name="page_hdr" type="text" size="40" default=""
+						label="Page title" description="The page title" />
+					<field name="page_text" type="textarea" rows="8" cols="60"
+						default="" label="Page text" description="Text to appear at the top of the page" />
+				</fieldset>
+			</fields>
+		</config>
+
+		<!-- Joomla 1.5 version -->
+		<params>
+			<param name="page_hdr" type="text" size="40" default=""
+				label="Page title" description="The page title" />
+			<param name="page_text" type="textarea" rows="8" cols="60"
+				default="" label="Page text" description="Text to appear at the top of the page" />
+		</params>
+	</state>
+</metadata>

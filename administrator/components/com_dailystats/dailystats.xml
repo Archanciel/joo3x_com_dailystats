@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="1.6.0" method="upgrade">
+
+	<name>Daily Stats</name>
+	<creationDate>26 February 2013</creationDate>
+	<author>JP Schnyder</author>
+	<authorUrl>http://com.jps.dev</authorUrl>
+	<version>${extension_version}</version><!-- ${extension_version defined in ./build.properties -->
+	<copyright>com.jps.dev 2013-2015</copyright>
+	<license>GNU General Public License</license>
+	<description>Component recording (via CRON) and charting article and attachment daily historical data.</description>
+
+	<files folder="site">
+		<filename>dailystats.php</filename>
+		<filename>index.html</filename>
+		<folder>views</folder>
+	</files>
+
+	<administration>
+		<menu img="components/com_dailystats/assets/plotalot-16.png">COM_DAILYSTATS_MENU</menu>
+
+		<files folder="admin">
+			<filename>dailystats.php</filename>
+			<filename>dailyStatsConstants.php</filename>
+			<filename>index.html</filename>
+			<folder>helpers</folder>
+			<folder>assets</folder>
+			<folder>language</folder>  <!-- related to COM_DAILYSTATS_MENU in menu tag -->
+			<folder>js</folder>
+			<folder>dao</folder>
+		</files>
+	</administration>
+
+</extension>
