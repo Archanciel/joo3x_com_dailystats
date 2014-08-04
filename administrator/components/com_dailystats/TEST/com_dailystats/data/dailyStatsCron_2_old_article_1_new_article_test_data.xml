@@ -3,14 +3,12 @@
 <dataset>
 	<table name="jos_content_cron_test">
 		<column>id</column>
+		<column>asset_id</column>
 		<column>title</column>
 		<column>alias</column>
-		<column>title_alias</column>
 		<column>introtext</column>
 		<column>fulltext</column>
 		<column>state</column>
-		<column>sectionid</column>
-		<column>mask</column>
 		<column>catid</column>
 		<column>created</column>
 		<column>created_by</column>
@@ -25,24 +23,24 @@
 		<column>urls</column>
 		<column>attribs</column>
 		<column>version</column>
-		<column>parentid</column>
 		<column>ordering</column>
 		<column>metakey</column>
 		<column>metadesc</column>
 		<column>access</column>
 		<column>hits</column>
 		<column>metadata</column>
+		<column>featured</column>
+		<column>language</column>
+		<column>xreference</column>
 		<row>
 			<!--  Previously published rticle with 1 attached file and 1 daily stats rec -->
 			<value>1</value> <!-- id -->
+			<value></value> <!-- asset_id -->
 			<value>A</value> <!-- title -->
 			<value>a</value> <!-- alias -->
-			<value></value> <!-- title_alias -->
 			<value>Introtext</value> <!-- introtext -->
 			<value>Fulltext</value> <!-- fulltext -->
 			<value>1</value> <!-- state -->
-			<value>0</value> <!-- sectionid -->
-			<value>0</value> <!-- mask -->
 			<value>0</value> <!-- catid -->
 			<value>2009-06-22 11:17:24</value> <!-- created -->
 			<value>42</value> <!-- created_by -->
@@ -57,25 +55,25 @@
 			<value></value> <!-- urls -->
 			<value>{"show_title":"","link_titles":"","show_intro":"","show_category":"","link_category":"","article-allow_ratings":"","article-allow_comments":"","show_author":"","show_create_date":"","show_modify_date":"","show_print_icon":"","show_email_icon":"","readmore":"","page_title":"","layout":""}</value> <!-- attribs -->
 			<value>1</value> <!-- version -->
-			<value>0</value> <!-- parentid -->
 			<value>0</value> <!-- ordering -->
 			<value></value> <!-- metakey -->
 			<value></value> <!-- metadesc -->
 			<value>1</value> <!-- access -->
 			<value>111</value> <!-- hits -->
 			<value>{"robots":"","author":""}</value> <!-- metadata -->
+			<value></value> <!-- featured -->
+			<value></value> <!-- language -->
+			<value></value> <!-- xreference -->
 		</row>
 		<row>
 			<!--  Previously published article with 1 attached file and 1 daily stats rec -->
 			<value>2</value> <!-- id -->
+			<value></value> <!-- asset_id -->
 			<value>B</value> <!-- title -->
 			<value>b</value> <!-- alias -->
-			<value></value> <!-- title_alias -->
 			<value>Introtext</value> <!-- introtext -->
 			<value>Fulltext</value> <!-- fulltext -->
 			<value>1</value> <!-- state -->
-			<value>1005</value> <!-- sectionid -->
-			<value>0</value> <!-- mask -->
 			<value>0</value> <!-- catid -->
 			<value>2009-06-22 11:17:24</value> <!-- created -->
 			<value>42</value> <!-- created_by -->
@@ -90,25 +88,25 @@
 			<value></value> <!-- urls -->
 			<value>{"show_title":"","link_titles":"","show_intro":"","show_category":"","link_category":"","article-allow_ratings":"","article-allow_comments":"","show_author":"","show_create_date":"","show_modify_date":"","show_print_icon":"","show_email_icon":"","readmore":"","page_title":"","layout":""}</value> <!-- attribs -->
 			<value>1</value> <!-- version -->
-			<value>0</value> <!-- parentid -->
 			<value>0</value> <!-- ordering -->
 			<value></value> <!-- metakey -->
 			<value></value> <!-- metadesc -->
 			<value>1</value> <!-- access -->
 			<value>112</value> <!-- hits -->
 			<value>{"robots":"","author":""}</value> <!-- metadata -->
+			<value></value> <!-- featured -->
+			<value></value> <!-- language -->
+			<value></value> <!-- xreference -->
 		</row>
 		<row>
 			<!--  Newly published article with 1 attached file and 0 daily stats recs -->
 			<value>3</value> <!-- id -->
+			<value></value> <!-- asset_id -->
 			<value>C</value> <!-- title -->
 			<value>c</value> <!-- alias -->
-			<value></value> <!-- title_alias -->
 			<value>Introtext</value> <!-- introtext -->
 			<value>Fulltext</value> <!-- fulltext -->
 			<value>1</value> <!-- state -->
-			<value>1003</value> <!-- sectionid -->
-			<value>0</value> <!-- mask -->
 			<value>0</value> <!-- catid -->
 			<value>2009-06-22 11:17:24</value> <!-- created -->
 			<value>42</value> <!-- created_by -->
@@ -123,13 +121,15 @@
 			<value></value> <!-- urls -->
 			<value>{"show_title":"","link_titles":"","show_intro":"","show_category":"","link_category":"","article-allow_ratings":"","article-allow_comments":"","show_author":"","show_create_date":"","show_modify_date":"","show_print_icon":"","show_email_icon":"","readmore":"","page_title":"","layout":""}</value> <!-- attribs -->
 			<value>1</value> <!-- version -->
-			<value>0</value> <!-- parentid -->
 			<value>0</value> <!-- ordering -->
 			<value></value> <!-- metakey -->
 			<value></value> <!-- metadesc -->
 			<value>1</value> <!-- access -->
 			<value>30</value> <!-- hits -->
 			<value>{"robots":"","author":""}</value> <!-- metadata -->
+			<value></value> <!-- featured -->
+			<value></value> <!-- language -->
+			<value></value> <!-- xreference -->
 		</row>
 	</table>
 	<table name="jos_attachments_cron_test">
@@ -142,14 +142,14 @@
 		<column>display_name</column>
 		<column>description</column>
 		<column>url</column>
-		<column>uploader_id</column>
+		<column>created_by</column>
 		<column>parent_id</column>
-		<column>published</column>
+		<column>state</column>
 		<column>user_field_1</column>
 		<column>user_field_2</column>
 		<column>user_field_3</column>
-		<column>create_date</column>
-		<column>modification_date</column>
+		<column>created</column>
+		<column>modified</column>
 		<column>download_count</column>
 		<row>
 			<!-- Attachment for article 1 -->
@@ -162,14 +162,14 @@
 			<value></value> <!-- display_name -->
 			<value></value> <!-- description -->
 			<value></value> <!-- url -->
-			<value>0</value> <!-- uploader_id -->
+			<value>0</value> <!-- created_by -->
 			<value>1</value> <!-- parent_id -->
-			<value>1</value> <!-- published -->
+			<value>1</value> <!-- state -->
 			<value></value> <!-- user_field_1 -->
 			<value></value> <!-- user_field_2 -->
 			<value></value> <!-- user_field_3 -->
-			<value>2009-07-23 20:49:28</value> <!-- create_date -->
-			<value>2009-07-23 20:49:28</value> <!-- modification_date -->
+			<value>2009-07-23 20:49:28</value> <!-- created -->
+			<value>2009-07-23 20:49:28</value> <!-- modified -->
 			<value>11</value> <!-- download_count -->
 		</row>
 		<row>
@@ -183,14 +183,14 @@
 			<value></value> <!-- display_name -->
 			<value></value> <!-- description -->
 			<value></value> <!-- url -->
-			<value>0</value> <!-- uploader_id -->
+			<value>0</value> <!-- created_by -->
 			<value>2</value> <!-- parent_id -->
-			<value>1</value> <!-- published -->
+			<value>1</value> <!-- state -->
 			<value></value> <!-- user_field_1 -->
 			<value></value> <!-- user_field_2 -->
 			<value></value> <!-- user_field_3 -->
-			<value>2009-07-23 20:49:28</value> <!-- create_date -->
-			<value>2009-07-23 20:49:28</value> <!-- modification_date -->
+			<value>2009-07-23 20:49:28</value> <!-- created -->
+			<value>2009-07-23 20:49:28</value> <!-- modified -->
 			<value>12</value> <!-- download_count -->
 		</row>
 		<row>
@@ -204,14 +204,14 @@
 			<value></value> <!-- display_name -->
 			<value></value> <!-- description -->
 			<value></value> <!-- url -->
-			<value>0</value> <!-- uploader_id -->
+			<value>0</value> <!-- created_by -->
 			<value>3</value> <!-- parent_id -->
-			<value>1</value> <!-- published -->
+			<value>1</value> <!-- state -->
 			<value></value> <!-- user_field_1 -->
 			<value></value> <!-- user_field_2 -->
 			<value></value> <!-- user_field_3 -->
-			<value>2009-07-23 20:49:28</value> <!-- create_date -->
-			<value>2009-07-23 20:49:28</value> <!-- modification_date -->
+			<value>2009-07-23 20:49:28</value> <!-- created -->
+			<value>2009-07-23 20:49:28</value> <!-- modified -->
 			<value>3</value> <!-- download_count -->
 		</row>
 	</table>
