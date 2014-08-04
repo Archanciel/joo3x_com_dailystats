@@ -12,24 +12,22 @@ require_once COM_DAILYSTATS_PATH . '..\dailyStatsConstants.php';
  *
  */
 class DailyStatsDaoExecDailyStatsCronEmptyDailyStatsTableOneArticleTest extends DailyStatsCronTestBase {
-	private $daily_stats_table_name = "daily_stats_cron_test";
-	
 	/**
 	 * Tests daily stats rec generation for 1 article with 1 attachment in an empty daily stats 
 	 * table
 	 */
 	public function testExecDailyStatsCronEmptyDailyStatsTableOneArticle() {
-		DailyStatsDao::execDailyStatsCron("#__" . $this->daily_stats_table_name,"#__attachments_cron_test","#__content_cron_test");
+		DailyStatsDao::execDailyStatsCron("#__" . $this->getDailyStatsTableName(),"#__attachments_cron_test","#__content_cron_test");
      	/* @var $db JDatabase */
     	$db = JFactory::getDBO();
-		$query = "SELECT COUNT(id) FROM #__" . $this->daily_stats_table_name; 
+		$query = "SELECT COUNT(id) FROM #__" . $this->getDailyStatsTableName(); 
     	$db->setQuery($query);
     	$count = $db->loadResult();
 
 		$this->assertEquals(1,$count,'1 daily_stats records expected');
 		
 		$today = date("Y-m-d");
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 1"; 
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 1"; 
     	$db->setQuery($query);
     	$res = $db->loadAssoc();
 		
@@ -49,7 +47,7 @@ class DailyStatsDaoExecDailyStatsCronEmptyDailyStatsTableOneArticleTest extends 
 	public function tearDown() {
      	/* @var $db JDatabase */
     	$db = JFactory::getDBO();
-		$query = "TRUNCATE TABLE #__" . $this->daily_stats_table_name; 
+		$query = "TRUNCATE TABLE #__" . $this->getDailyStatsTableName(); 
     	$db->setQuery($query);
 		$db->query();
 		

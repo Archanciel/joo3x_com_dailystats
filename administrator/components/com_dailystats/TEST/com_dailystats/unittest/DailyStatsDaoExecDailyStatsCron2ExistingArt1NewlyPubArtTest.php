@@ -13,8 +13,6 @@ require_once COM_DAILYSTATS_PATH . '..\dailyStatsConstants.php';
  *
  */
 class DailyStatsDaoExecDailyStatsCron2ExistingArt1NewlyPubArtTest extends DailyStatsCronTestBase {
-	private $daily_stats_table_name = "daily_stats_cron_test";
-	
 	/**
 	 * Tests daily stats rec generation for 2 articles published in the past (id = 1, 2) and 1 newly 
 	 * published article, with 1 attachment each, in a daily stats table with 1 daily stat rec for each
@@ -29,13 +27,13 @@ class DailyStatsDaoExecDailyStatsCron2ExistingArt1NewlyPubArtTest extends DailyS
 		
   		// execute cron
   		
- 		DailyStatsDao::execDailyStatsCron("#__" . $this->daily_stats_table_name,"#__attachments_cron_test","#__content_cron_test");
+ 		DailyStatsDao::execDailyStatsCron("#__" . $this->getDailyStatsTableName(),"#__attachments_cron_test","#__content_cron_test");
 		
  		// verify results
  		
 		/* @var $db JDatabase */
     	$db = JFactory::getDBO();
-		$query = "SELECT COUNT(id) FROM #__" . $this->daily_stats_table_name; 
+		$query = "SELECT COUNT(id) FROM #__" . $this->getDailyStatsTableName(); 
     	$db->setQuery($query);
     	$count = $db->loadResult();
 
@@ -45,7 +43,7 @@ class DailyStatsDaoExecDailyStatsCron2ExistingArt1NewlyPubArtTest extends DailyS
 
 		// check daily stats for article 1
 		
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 1 AND date = '$today'"; 
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 1 AND date = '$today'"; 
     	$db->setQuery($query);
     	$res = $db->loadAssoc();
 		
@@ -56,7 +54,7 @@ class DailyStatsDaoExecDailyStatsCron2ExistingArt1NewlyPubArtTest extends DailyS
 
 		// check daily stats for article 2
 		
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 2 AND date = '$today'"; 
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 2 AND date = '$today'"; 
     	$db->setQuery($query);
     	$res = $db->loadAssoc();
 		
@@ -67,7 +65,7 @@ class DailyStatsDaoExecDailyStatsCron2ExistingArt1NewlyPubArtTest extends DailyS
 
 		// check daily stats for article 3
 		
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 3 AND date = '$today'"; 
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 3 AND date = '$today'"; 
     	$db->setQuery($query);
     	$res = $db->loadAssoc();
 		
@@ -93,13 +91,13 @@ class DailyStatsDaoExecDailyStatsCron2ExistingArt1NewlyPubArtTest extends DailyS
 		
   		// execute cron
   		
- 		DailyStatsDao::execDailyStatsCron("#__" . $this->daily_stats_table_name,"#__attachments_cron_test","#__content_cron_test");
+ 		DailyStatsDao::execDailyStatsCron("#__" . $this->getDailyStatsTableName(),"#__attachments_cron_test","#__content_cron_test");
 		
  		// verify results
  		
 		/* @var $db JDatabase */
     	$db = JFactory::getDBO();
-		$query = "SELECT COUNT(id) FROM #__" . $this->daily_stats_table_name; 
+		$query = "SELECT COUNT(id) FROM #__" . $this->getDailyStatsTableName(); 
     	$db->setQuery($query);
     	$count = $db->loadResult();
 
@@ -109,7 +107,7 @@ class DailyStatsDaoExecDailyStatsCron2ExistingArt1NewlyPubArtTest extends DailyS
 
 		// check daily stats for article 1
 		
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 1 AND date = '$today'"; 
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 1 AND date = '$today'"; 
     	$db->setQuery($query);
     	$res = $db->loadAssoc();
 		
@@ -120,7 +118,7 @@ class DailyStatsDaoExecDailyStatsCron2ExistingArt1NewlyPubArtTest extends DailyS
 
 		// check daily stats for article 2
 		
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 2 AND date = '$today'"; 
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 2 AND date = '$today'"; 
     	$db->setQuery($query);
     	$res = $db->loadAssoc();
 		
@@ -131,7 +129,7 @@ class DailyStatsDaoExecDailyStatsCron2ExistingArt1NewlyPubArtTest extends DailyS
 
 		// check daily stats for article 3
 
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 3 AND date = '$today'";
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 3 AND date = '$today'";
 		$db->setQuery($query);
 		$res = $db->loadAssoc();
 
@@ -158,13 +156,13 @@ class DailyStatsDaoExecDailyStatsCron2ExistingArt1NewlyPubArtTest extends DailyS
 		
   		// execute cron
   		
- 		DailyStatsDao::execDailyStatsCron("#__" . $this->daily_stats_table_name,"#__attachments_cron_test","#__content_cron_test");
+ 		DailyStatsDao::execDailyStatsCron("#__" . $this->getDailyStatsTableName(),"#__attachments_cron_test","#__content_cron_test");
 		
  		// verify results
  		
 		/* @var $db JDatabase */
     	$db = JFactory::getDBO();
-		$query = "SELECT COUNT(id) FROM #__" . $this->daily_stats_table_name; 
+		$query = "SELECT COUNT(id) FROM #__" . $this->getDailyStatsTableName(); 
     	$db->setQuery($query);
     	$count = $db->loadResult();
 
@@ -174,7 +172,7 @@ class DailyStatsDaoExecDailyStatsCron2ExistingArt1NewlyPubArtTest extends DailyS
 
 		// check daily stats for article 1
 		
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 1 AND date = '$today'"; 
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 1 AND date = '$today'"; 
     	$db->setQuery($query);
     	$res = $db->loadAssoc();
 		
@@ -185,7 +183,7 @@ class DailyStatsDaoExecDailyStatsCron2ExistingArt1NewlyPubArtTest extends DailyS
 
 		// check daily stats for article 2
 		
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 2 AND date = '$today'"; 
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 2 AND date = '$today'"; 
     	$db->setQuery($query);
     	$res = $db->loadAssoc();
 		
@@ -196,7 +194,7 @@ class DailyStatsDaoExecDailyStatsCron2ExistingArt1NewlyPubArtTest extends DailyS
 
 		// check daily stats for article 3
 		
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 3 AND date = '$today'"; 
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 3 AND date = '$today'"; 
     	$db->setQuery($query);
     	$res = $db->loadAssoc();
 		
@@ -222,13 +220,13 @@ class DailyStatsDaoExecDailyStatsCron2ExistingArt1NewlyPubArtTest extends DailyS
 		
   		// execute cron
   		
- 		DailyStatsDao::execDailyStatsCron("#__" . $this->daily_stats_table_name,"#__attachments_cron_test","#__content_cron_test");
+ 		DailyStatsDao::execDailyStatsCron("#__" . $this->getDailyStatsTableName(),"#__attachments_cron_test","#__content_cron_test");
 		
  		// verify results
  		
 		/* @var $db JDatabase */
     	$db = JFactory::getDBO();
-		$query = "SELECT COUNT(id) FROM #__" . $this->daily_stats_table_name; 
+		$query = "SELECT COUNT(id) FROM #__" . $this->getDailyStatsTableName(); 
     	$db->setQuery($query);
     	$count = $db->loadResult();
 
@@ -238,7 +236,7 @@ class DailyStatsDaoExecDailyStatsCron2ExistingArt1NewlyPubArtTest extends DailyS
 
 		// check daily stats for article 3
 		
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 3 AND date = '$today'";
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 3 AND date = '$today'";
 		$db->setQuery($query);
 		$res = $db->loadAssoc();
 		
@@ -251,10 +249,10 @@ class DailyStatsDaoExecDailyStatsCron2ExistingArt1NewlyPubArtTest extends DailyS
 	}
 	
 	private function updateAllDailyStatRec($forDate) {
-		$query= "UPDATE jos_" . $this->daily_stats_table_name .
+		$query= "UPDATE jos_" . $this->getDailyStatsTableName() .
 				" SET date = '$forDate'";
 		
-		$con=mysqli_connect("localhost","root","","pluscon15_dev");
+		$con=mysqli_connect("localhost","root","",self::getDatabaseName());
 
 		// Check connection
 		if (mysqli_connect_errno()) {
@@ -273,7 +271,7 @@ class DailyStatsDaoExecDailyStatsCron2ExistingArt1NewlyPubArtTest extends DailyS
 	public function tearDown() {
      	/* @var $db JDatabase */
     	$db = JFactory::getDBO();
-		$query = "TRUNCATE TABLE #__" . $this->daily_stats_table_name; 
+		$query = "TRUNCATE TABLE #__" . $this->getDailyStatsTableName(); 
     	$db->setQuery($query);
 		$db->query();
 		

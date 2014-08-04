@@ -16,8 +16,6 @@ require_once COM_DAILYSTATS_PATH . '..\dailyStatsConstants.php';
  *
  */
 class DailyStatsDaoExecDailyStatsCron1DS1Article1NewAttach1NewInvalidDSTest extends DailyStatsCronTestBase {
-	private $daily_stats_table_name = "daily_stats_cron_test";
-	
 	/**
 	 * Tests daily stats rec generation for 1 article with 1 attachment in a daily stats table
 	 * with 1 daily stat rec dated 1 day before cron execution.
@@ -32,7 +30,7 @@ class DailyStatsDaoExecDailyStatsCron1DS1Article1NewAttach1NewInvalidDSTest exte
   		// execute cron
   		
   		try {
-  			DailyStatsDao::execDailyStatsCron("#__" . $this->daily_stats_table_name,"#__attachments_cron_test","#__content_cron_test");
+  			DailyStatsDao::execDailyStatsCron("#__" . $this->getDailyStatsTableName(),"#__attachments_cron_test","#__content_cron_test");
   		} catch (Exception $e) {
   			$this->checkEntryExistInLog("INVALID DAILY_STATS RECORD ENCOUNTERED. CRON JOB ABORTED. NO DATA INSERTED. NEEDS IMMEDIATE FIX !");
   			$this->assertContains("BIGINT UNSIGNED value is out of range", $e->getMessage());
@@ -42,23 +40,6 @@ class DailyStatsDaoExecDailyStatsCron1DS1Article1NewAttach1NewInvalidDSTest exte
    		$this->fail("Exception should have been thrown by dailyStatsDao::executeInsertQuery() !");
 	}
 	
-	private function updateDailyStatRec($id, $forDate) {
-		$query= "UPDATE jos_" . $this->daily_stats_table_name .
-				" SET date = '$forDate'
-				 WHERE id = $id";
-		
-		$con=mysqli_connect("localhost","root","","pluscon15_dev");
-
-		// Check connection
-		if (mysqli_connect_errno()) {
-			echo "Failed to connect to MySQL: " . mysqli_connect_error();
-		}
-		
-		mysqli_query($con,$query);
-		
-		mysqli_close($con);
-	}
-	
 	public function setUp() {
 		parent::setUp ();
 	}
@@ -66,7 +47,7 @@ class DailyStatsDaoExecDailyStatsCron1DS1Article1NewAttach1NewInvalidDSTest exte
 	public function tearDown() {
      	/* @var $db JDatabase */
     	$db = JFactory::getDBO();
-		$query = "TRUNCATE TABLE #__" . $this->daily_stats_table_name; 
+		$query = "TRUNCATE TABLE #__" . $this->getDailyStatsTableName(); 
     	$db->setQuery($query);
 		$db->query();
 		

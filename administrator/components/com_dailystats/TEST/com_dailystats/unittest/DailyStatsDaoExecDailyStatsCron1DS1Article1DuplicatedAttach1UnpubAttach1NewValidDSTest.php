@@ -15,8 +15,6 @@ require_once COM_DAILYSTATS_PATH . '..\dailyStatsConstants.php';
  *
  */
 class DailyStatsDaoExecDailyStatsCron1DS1Article1DuplicatedAttach1UnpubAttach1NewValidDSTest extends DailyStatsCronTestBase {
-	private $daily_stats_table_name = "daily_stats_cron_test";
-	
 	public function testExecDailyStatsCron1NewAttach1UnpubAttach() { 
   		// update first DS rec date
 		$this->updateDailyStatRec(1,date("Y-m-d",strtotime("-2 day")));
@@ -26,23 +24,23 @@ class DailyStatsDaoExecDailyStatsCron1DS1Article1DuplicatedAttach1UnpubAttach1Ne
   		
   		// execute cron
   		
-		DailyStatsDao::execDailyStatsCron("#__" . $this->daily_stats_table_name,"#__attachments_cron_test","#__content_cron_test");
+		DailyStatsDao::execDailyStatsCron("#__" . $this->getDailyStatsTableName(),"#__attachments_cron_test","#__content_cron_test");
 		
  		// verify results
  		
 		/* @var $db JDatabase */
     	$db = JFactory::getDBO();
-		$query = "SELECT COUNT(id) FROM #__" . $this->daily_stats_table_name; 
+		$query = "SELECT COUNT(id) FROM #__" . $this->getDailyStatsTableName(); 
     	$db->setQuery($query);
     	$count = $db->loadResult();
 
-		$this->assertEquals(3,$count,'3 daily_stats records expected, 2 for the past and only 1 for today for article 1 which has now 2 attachments, one of hwich is unpublished');
+		$this->assertEquals(3,$count,'3 daily_stats records expected, 2 for the past and only 1 for today for article 1 which has now 2 attachments, one of which is unpublished');
 
 		$today = date("Y-m-d",strtotime("now"));
 
 		// check daily stats for article 1
 		
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 1 AND date = '$today'"; 
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 1 AND date = '$today'"; 
     	$db->setQuery($query);
     	$res = $db->loadAssoc();
 		
@@ -54,23 +52,6 @@ class DailyStatsDaoExecDailyStatsCron1DS1Article1DuplicatedAttach1UnpubAttach1Ne
 		$this->checkEntryExistInLog("Daily stats for $today added in DB. 0 rows inserted for new attachment\(s\). 1 rows inserted for existing attachments \(gap filled: 1 day\(s\)\).");
 	}
 	
-	private function updateDailyStatRec($id, $forDate) {
-		$query= "UPDATE jos_" . $this->daily_stats_table_name .
-				" SET date = '$forDate'
-				 WHERE id = $id";
-		
-		$con=mysqli_connect("localhost","root","","pluscon15_dev");
-
-		// Check connection
-		if (mysqli_connect_errno()) {
-			echo "Failed to connect to MySQL: " . mysqli_connect_error();
-		}
-		
-		mysqli_query($con,$query);
-		
-		mysqli_close($con);
-	}
-	
 	public function setUp() {
 		parent::setUp ();
 	}
@@ -78,7 +59,7 @@ class DailyStatsDaoExecDailyStatsCron1DS1Article1DuplicatedAttach1UnpubAttach1Ne
 	public function tearDown() {
      	/* @var $db JDatabase */
     	$db = JFactory::getDBO();
-		$query = "TRUNCATE TABLE #__" . $this->daily_stats_table_name; 
+		$query = "TRUNCATE TABLE #__" . $this->getDailyStatsTableName(); 
     	$db->setQuery($query);
 		$db->query();
 		

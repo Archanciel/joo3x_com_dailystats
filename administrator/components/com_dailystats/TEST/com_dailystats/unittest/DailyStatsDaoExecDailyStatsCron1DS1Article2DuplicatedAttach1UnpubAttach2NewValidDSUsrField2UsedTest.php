@@ -22,8 +22,6 @@ require_once COM_DAILYSTATS_PATH . '..\dailyStatsConstants.php';
  *
  */
 class DailyStatsDaoExecDailyStatsCron1DS1Article2DuplicatedAttach1UnpubAttach2NewValidDSUsrField2UsedTest extends DailyStatsCronTestBase {
-	private $daily_stats_table_name = "daily_stats_cron_test";
-	
 	public function testExecDailyStatsCron2NewAttach1UnpubAttach() { 
   		// update first DS rec date
 		$this->updateDailyStatRec(1,date("Y-m-d",strtotime("-2 day")));
@@ -36,13 +34,13 @@ class DailyStatsDaoExecDailyStatsCron1DS1Article2DuplicatedAttach1UnpubAttach2Ne
 		
   		// execute cron
   		
-		DailyStatsDao::execDailyStatsCron("#__" . $this->daily_stats_table_name,"#__attachments_cron_test","#__content_cron_test");
+		DailyStatsDao::execDailyStatsCron("#__" . $this->getDailyStatsTableName(),"#__attachments_cron_test","#__content_cron_test");
 		
  		// verify results
  		
 		/* @var $db JDatabase */
     	$db = JFactory::getDBO();
-		$query = "SELECT COUNT(id) FROM #__" . $this->daily_stats_table_name; 
+		$query = "SELECT COUNT(id) FROM #__" . $this->getDailyStatsTableName(); 
     	$db->setQuery($query);
     	$count = $db->loadResult();
 
@@ -52,7 +50,7 @@ class DailyStatsDaoExecDailyStatsCron1DS1Article2DuplicatedAttach1UnpubAttach2Ne
 
 		// check daily stats for main duplicated attachment
 		
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE attachment_id = 10002 AND date = '$today'"; 
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE attachment_id = 10002 AND date = '$today'"; 
     	$db->setQuery($query);
     	$res = $db->loadAssoc();
 		
@@ -64,23 +62,6 @@ class DailyStatsDaoExecDailyStatsCron1DS1Article2DuplicatedAttach1UnpubAttach2Ne
 		$this->checkEntryExistInLog("Daily stats for $today added in DB. 0 rows inserted for new attachment\(s\). 1 rows inserted for existing attachments \(gap filled: 1 day\(s\)\).");
 	}
 	
-	private function updateDailyStatRec($id, $forDate) {
-		$query= "UPDATE jos_" . $this->daily_stats_table_name .
-				" SET date = '$forDate'
-				 WHERE id = $id";
-		
-		$con=mysqli_connect("localhost","root","","pluscon15_dev");
-
-		// Check connection
-		if (mysqli_connect_errno()) {
-			echo "Failed to connect to MySQL: " . mysqli_connect_error();
-		}
-		
-		mysqli_query($con,$query);
-		
-		mysqli_close($con);
-	}
-	
 	public function setUp() {
 		parent::setUp ();
 	}
@@ -88,7 +69,7 @@ class DailyStatsDaoExecDailyStatsCron1DS1Article2DuplicatedAttach1UnpubAttach2Ne
 	public function tearDown() {
      	/* @var $db JDatabase */
     	$db = JFactory::getDBO();
-		$query = "TRUNCATE TABLE #__" . $this->daily_stats_table_name; 
+		$query = "TRUNCATE TABLE #__" . $this->getDailyStatsTableName(); 
     	$db->setQuery($query);
 		$db->query();
 		

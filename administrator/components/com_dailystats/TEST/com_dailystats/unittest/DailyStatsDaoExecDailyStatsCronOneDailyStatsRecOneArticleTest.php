@@ -13,8 +13,6 @@ require_once COM_DAILYSTATS_PATH . '..\dailyStatsConstants.php';
  *
  */
 class DailyStatsDaoExecDailyStatsCronOneDailyStatsRecOneArticleTest extends DailyStatsCronTestBase {
-	private $daily_stats_table_name = "daily_stats_cron_test";
-	
 	/**
 	 * Tests daily stats rec generation for 1 article with 1 attachment in a daily stats table
 	 * with 1 daily stat rec dated 1 day before cron execution.
@@ -23,24 +21,24 @@ class DailyStatsDaoExecDailyStatsCronOneDailyStatsRecOneArticleTest extends Dail
 		// force existing daily stats rec date to yesterday
 		
 		$yesterday = date("Y-m-d",strtotime("-1 day"));
-  		$this->updateDailyStatRec($yesterday);
+  		$this->updateDailyStatRec(1,$yesterday);
 		
   		// execute cron
   		
- 		DailyStatsDao::execDailyStatsCron("#__" . $this->daily_stats_table_name,"#__attachments_cron_test","#__content_cron_test");
+ 		DailyStatsDao::execDailyStatsCron("#__" . $this->getDailyStatsTableName(),"#__attachments_cron_test","#__content_cron_test");
 		
  		// verify results
  		
 		/* @var $db JDatabase */
     	$db = JFactory::getDBO();
-		$query = "SELECT COUNT(id) FROM #__" . $this->daily_stats_table_name; 
+		$query = "SELECT COUNT(id) FROM #__" . $this->getDailyStatsTableName(); 
     	$db->setQuery($query);
     	$count = $db->loadResult();
 
 		$this->assertEquals(2,$count,'2 daily_stats records expected, one for yesterday and one for today');
 
 		$today = date("Y-m-d",strtotime("now"));
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 1 AND date = '$today'"; 
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 1 AND date = '$today'"; 
     	$db->setQuery($query);
     	$res = $db->loadAssoc();
 		
@@ -60,24 +58,24 @@ class DailyStatsDaoExecDailyStatsCronOneDailyStatsRecOneArticleTest extends Dail
 		// force existing daily stats rec date to yesterday
 	
 		$yesterday = date("Y-m-d",strtotime("-2 day"));
-		$this->updateDailyStatRec($yesterday);
+		$this->updateDailyStatRec(1,$yesterday);
 	
 		// execute cron
 	
-		DailyStatsDao::execDailyStatsCron("#__" . $this->daily_stats_table_name,"#__attachments_cron_test","#__content_cron_test");
+		DailyStatsDao::execDailyStatsCron("#__" . $this->getDailyStatsTableName(),"#__attachments_cron_test","#__content_cron_test");
 	
 		// verify results
 			
 		/* @var $db JDatabase */
 		$db = JFactory::getDBO();
-		$query = "SELECT COUNT(id) FROM #__" . $this->daily_stats_table_name;
+		$query = "SELECT COUNT(id) FROM #__" . $this->getDailyStatsTableName();
 		$db->setQuery($query);
 		$count = $db->loadResult();
 	
 		$this->assertEquals(2,$count,'2 daily_stats records expected, one preexisting and one for today');
 	
 		$today = date("Y-m-d",strtotime("now"));
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 1 AND date = '$today'";
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 1 AND date = '$today'";
 		$db->setQuery($query);
 		$res = $db->loadAssoc();
 	
@@ -97,24 +95,24 @@ class DailyStatsDaoExecDailyStatsCronOneDailyStatsRecOneArticleTest extends Dail
 		// force existing daily stats rec date to yesterday
 	
 		$yesterday = date("Y-m-d",strtotime("-20 day"));
-		$this->updateDailyStatRec($yesterday);
+		$this->updateDailyStatRec(1,$yesterday);
 	
 		// execute cron
 	
-		DailyStatsDao::execDailyStatsCron("#__" . $this->daily_stats_table_name,"#__attachments_cron_test","#__content_cron_test");
+		DailyStatsDao::execDailyStatsCron("#__" . $this->getDailyStatsTableName(),"#__attachments_cron_test","#__content_cron_test");
 	
 		// verify results
 			
 		/* @var $db JDatabase */
 		$db = JFactory::getDBO();
-		$query = "SELECT COUNT(id) FROM #__" . $this->daily_stats_table_name;
+		$query = "SELECT COUNT(id) FROM #__" . $this->getDailyStatsTableName();
 		$db->setQuery($query);
 		$count = $db->loadResult();
 	
 		$this->assertEquals(2,$count,'2 daily_stats records expected, one preexisting and and one for today');
 	
 		$today = date("Y-m-d",strtotime("now"));
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 1 AND date = '$today'";
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 1 AND date = '$today'";
 		$db->setQuery($query);
 		$res = $db->loadAssoc();
 	
@@ -134,17 +132,17 @@ class DailyStatsDaoExecDailyStatsCronOneDailyStatsRecOneArticleTest extends Dail
 		// force existing daily stats rec date to yesterday
 	
 		$yesterday = date("Y-m-d",strtotime("-21 day"));
-		$this->updateDailyStatRec($yesterday);
+		$this->updateDailyStatRec(1,$yesterday);
 	
 		// execute cron
 	
-		DailyStatsDao::execDailyStatsCron("#__" . $this->daily_stats_table_name,"#__attachments_cron_test","#__content_cron_test");
+		DailyStatsDao::execDailyStatsCron("#__" . $this->getDailyStatsTableName(),"#__attachments_cron_test","#__content_cron_test");
 	
 		// verify results
 			
 		/* @var $db JDatabase */
 		$db = JFactory::getDBO();
-		$query = "SELECT COUNT(id) FROM #__" . $this->daily_stats_table_name;
+		$query = "SELECT COUNT(id) FROM #__" . $this->getDailyStatsTableName();
 		$db->setQuery($query);
 		$count = $db->loadResult();
 	
@@ -155,23 +153,6 @@ class DailyStatsDaoExecDailyStatsCronOneDailyStatsRecOneArticleTest extends Dail
 		$this->checkEntryExistInLog("Daily stats for $today added in DB. 0 rows inserted for new attachment\(s\). 0 rows inserted for existing attachments. GAP EXCEEDS MAX INTERVAL OF 20 DAYS !");
 	}
 	
-	private function updateDailyStatRec($forDate) {
-		$query= "UPDATE jos_" . $this->daily_stats_table_name .
-				" SET date = '$forDate'
-				 WHERE id = 1";
-		
-		$con=mysqli_connect("localhost","root","","pluscon15_dev");
-
-		// Check connection
-		if (mysqli_connect_errno()) {
-			echo "Failed to connect to MySQL: " . mysqli_connect_error();
-		}
-		
-		mysqli_query($con,$query);
-		
-		mysqli_close($con);
-	}
-	
 	public function setUp() {
 		parent::setUp ();
 	}
@@ -179,7 +160,7 @@ class DailyStatsDaoExecDailyStatsCronOneDailyStatsRecOneArticleTest extends Dail
 	public function tearDown() {
      	/* @var $db JDatabase */
     	$db = JFactory::getDBO();
-		$query = "TRUNCATE TABLE #__" . $this->daily_stats_table_name; 
+		$query = "TRUNCATE TABLE #__" . $this->getDailyStatsTableName(); 
     	$db->setQuery($query);
 		$db->query();
 		

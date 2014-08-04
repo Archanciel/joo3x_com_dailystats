@@ -12,8 +12,6 @@ require_once COM_DAILYSTATS_PATH . '..\dailyStatsConstants.php';
  *
  */
 class DailyStatsDaoExecDailyStatsCron1ExistingArt1NewArt2AttachTest extends DailyStatsCronTestBase {
-	private $daily_stats_table_name = "daily_stats_cron_test";
-	
 	/**
 	 * Tests daily stats rec generation for 1 existing article with 1 attachment and 1 daily stat rec d
 	 * ated 1 day before cron execution anc 1 new article with 2 attachments.
@@ -22,17 +20,17 @@ class DailyStatsDaoExecDailyStatsCron1ExistingArt1NewArt2AttachTest extends Dail
 		// force existing daily stats rec date to yesterday
 		
 		$pastDSDate = date("Y-m-d",strtotime("-1 day"));
-  		$this->updateDailyStatRec($pastDSDate);
+  		$this->updateDailyStatRec(1,$pastDSDate);
 		
   		// execute cron
   		
- 		DailyStatsDao::execDailyStatsCron("#__" . $this->daily_stats_table_name,"#__attachments_cron_test","#__content_cron_test");
+ 		DailyStatsDao::execDailyStatsCron("#__" . $this->getDailyStatsTableName(),"#__attachments_cron_test","#__content_cron_test");
 		
  		// verify results
  		
 		/* @var $db JDatabase */
     	$db = JFactory::getDBO();
-		$query = "SELECT COUNT(id) FROM #__" . $this->daily_stats_table_name; 
+		$query = "SELECT COUNT(id) FROM #__" . $this->getDailyStatsTableName(); 
     	$db->setQuery($query);
     	$count = $db->loadResult();
 
@@ -41,7 +39,7 @@ class DailyStatsDaoExecDailyStatsCron1ExistingArt1NewArt2AttachTest extends Dail
 		// checking new DS for existing article 1
 		
 		$today = date("Y-m-d",strtotime("now"));
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 1 AND date = '$today'"; 
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 1 AND date = '$today'"; 
     	$db->setQuery($query);
     	$res = $db->loadAssoc();
 		
@@ -52,7 +50,7 @@ class DailyStatsDaoExecDailyStatsCron1ExistingArt1NewArt2AttachTest extends Dail
 		
 		// checking 2 new DS for new article 2
 		
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 2 AND attachment_id = 10002 AND date = '$today'";
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 2 AND attachment_id = 10002 AND date = '$today'";
 		$db->setQuery($query);
 		$res = $db->loadAssoc();
 		
@@ -61,7 +59,7 @@ class DailyStatsDaoExecDailyStatsCron1ExistingArt1NewArt2AttachTest extends Dail
 		$this->assertEquals(20,$res['date_downloads'],'date downloads');
 		$this->assertEquals(20,$res['total_downloads_to_date'],'total downloads');
 		
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 2 AND attachment_id = 10003 AND date = '$today'";
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 2 AND attachment_id = 10003 AND date = '$today'";
 		$db->setQuery($query);
 		$res = $db->loadAssoc();
 		
@@ -81,17 +79,17 @@ class DailyStatsDaoExecDailyStatsCron1ExistingArt1NewArt2AttachTest extends Dail
 		// force existing daily stats rec date to yesterday
 	
 		$pastDSDate = date("Y-m-d",strtotime("-2 day"));
-		$this->updateDailyStatRec($pastDSDate);
+		$this->updateDailyStatRec(1,$pastDSDate);
 	
 		// execute cron
 	
-		DailyStatsDao::execDailyStatsCron("#__" . $this->daily_stats_table_name,"#__attachments_cron_test","#__content_cron_test");
+		DailyStatsDao::execDailyStatsCron("#__" . $this->getDailyStatsTableName(),"#__attachments_cron_test","#__content_cron_test");
 	
 		// verify results
 			
 		/* @var $db JDatabase */
 		$db = JFactory::getDBO();
-		$query = "SELECT COUNT(id) FROM #__" . $this->daily_stats_table_name;
+		$query = "SELECT COUNT(id) FROM #__" . $this->getDailyStatsTableName();
 		$db->setQuery($query);
 		$count = $db->loadResult();
 	
@@ -100,7 +98,7 @@ class DailyStatsDaoExecDailyStatsCron1ExistingArt1NewArt2AttachTest extends Dail
 		// checking new DS for existing article 1
 		
 		$today = date("Y-m-d",strtotime("now"));
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 1 AND date = '$today'"; 
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 1 AND date = '$today'"; 
     	$db->setQuery($query);
     	$res = $db->loadAssoc();
 		
@@ -111,7 +109,7 @@ class DailyStatsDaoExecDailyStatsCron1ExistingArt1NewArt2AttachTest extends Dail
 		
 		// checking 2 new DS for new article 2
 		
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 2 AND attachment_id = 10002 AND date = '$today'";
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 2 AND attachment_id = 10002 AND date = '$today'";
 		$db->setQuery($query);
 		$res = $db->loadAssoc();
 		
@@ -120,7 +118,7 @@ class DailyStatsDaoExecDailyStatsCron1ExistingArt1NewArt2AttachTest extends Dail
 		$this->assertEquals(20,$res['date_downloads'],'date downloads');
 		$this->assertEquals(20,$res['total_downloads_to_date'],'total downloads');
 		
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 2 AND attachment_id = 10003 AND date = '$today'";
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 2 AND attachment_id = 10003 AND date = '$today'";
 		$db->setQuery($query);
 		$res = $db->loadAssoc();
 		
@@ -140,17 +138,17 @@ class DailyStatsDaoExecDailyStatsCron1ExistingArt1NewArt2AttachTest extends Dail
 		// force existing daily stats rec date to yesterday
 	
 		$pastDSDate = date("Y-m-d",strtotime("-20 day"));
-		$this->updateDailyStatRec($pastDSDate);
+		$this->updateDailyStatRec(1,$pastDSDate);
 	
 		// execute cron
 	
-		DailyStatsDao::execDailyStatsCron("#__" . $this->daily_stats_table_name,"#__attachments_cron_test","#__content_cron_test");
+		DailyStatsDao::execDailyStatsCron("#__" . $this->getDailyStatsTableName(),"#__attachments_cron_test","#__content_cron_test");
 	
 		// verify results
 			
 		/* @var $db JDatabase */
 		$db = JFactory::getDBO();
-		$query = "SELECT COUNT(id) FROM #__" . $this->daily_stats_table_name;
+		$query = "SELECT COUNT(id) FROM #__" . $this->getDailyStatsTableName();
 		$db->setQuery($query);
 		$count = $db->loadResult();
 	
@@ -159,7 +157,7 @@ class DailyStatsDaoExecDailyStatsCron1ExistingArt1NewArt2AttachTest extends Dail
 		// checking new DS for existing article 1
 		
 		$today = date("Y-m-d",strtotime("now"));
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 1 AND date = '$today'"; 
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 1 AND date = '$today'"; 
     	$db->setQuery($query);
     	$res = $db->loadAssoc();
 		
@@ -170,7 +168,7 @@ class DailyStatsDaoExecDailyStatsCron1ExistingArt1NewArt2AttachTest extends Dail
 		
 		// checking 2 new DS for new article 2
 		
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 2 AND attachment_id = 10002 AND date = '$today'";
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 2 AND attachment_id = 10002 AND date = '$today'";
 		$db->setQuery($query);
 		$res = $db->loadAssoc();
 		
@@ -179,7 +177,7 @@ class DailyStatsDaoExecDailyStatsCron1ExistingArt1NewArt2AttachTest extends Dail
 		$this->assertEquals(20,$res['date_downloads'],'date downloads');
 		$this->assertEquals(20,$res['total_downloads_to_date'],'total downloads');
 		
-		$query = "SELECT * FROM #__" . $this->daily_stats_table_name . " WHERE article_id = 2 AND attachment_id = 10003 AND date = '$today'";
+		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 2 AND attachment_id = 10003 AND date = '$today'";
 		$db->setQuery($query);
 		$res = $db->loadAssoc();
 		
@@ -199,17 +197,17 @@ class DailyStatsDaoExecDailyStatsCron1ExistingArt1NewArt2AttachTest extends Dail
 		// force existing daily stats rec date to yesterday
 	
 		$pastDSDate = date("Y-m-d",strtotime("-21 day"));
-		$this->updateDailyStatRec($pastDSDate);
+		$this->updateDailyStatRec(1,$pastDSDate);
 	
 		// execute cron
 	
-		DailyStatsDao::execDailyStatsCron("#__" . $this->daily_stats_table_name,"#__attachments_cron_test","#__content_cron_test");
+		DailyStatsDao::execDailyStatsCron("#__" . $this->getDailyStatsTableName(),"#__attachments_cron_test","#__content_cron_test");
 	
 		// verify results
 			
 		/* @var $db JDatabase */
 		$db = JFactory::getDBO();
-		$query = "SELECT COUNT(id) FROM #__" . $this->daily_stats_table_name;
+		$query = "SELECT COUNT(id) FROM #__" . $this->getDailyStatsTableName();
 		$db->setQuery($query);
 		$count = $db->loadResult();
 	
@@ -220,23 +218,6 @@ class DailyStatsDaoExecDailyStatsCron1ExistingArt1NewArt2AttachTest extends Dail
 		$this->checkEntryExistInLog("Daily stats for $today added in DB. 2 rows inserted for new attachment\(s\). 0 rows inserted for existing attachments. GAP EXCEEDS MAX INTERVAL OF 20 DAYS !");
 	}
 	
-	private function updateDailyStatRec($forDate) {
-		$query= "UPDATE jos_" . $this->daily_stats_table_name .
-				" SET date = '$forDate'
-				 WHERE id = 1";
-		
-		$con=mysqli_connect("localhost","root","","pluscon15_dev");
-
-		// Check connection
-		if (mysqli_connect_errno()) {
-			echo "Failed to connect to MySQL: " . mysqli_connect_error();
-		}
-		
-		mysqli_query($con,$query);
-		
-		mysqli_close($con);
-	}
-	
 	public function setUp() {
 		parent::setUp ();
 	}
@@ -244,7 +225,7 @@ class DailyStatsDaoExecDailyStatsCron1ExistingArt1NewArt2AttachTest extends Dail
 	public function tearDown() {
      	/* @var $db JDatabase */
     	$db = JFactory::getDBO();
-		$query = "TRUNCATE TABLE #__" . $this->daily_stats_table_name; 
+		$query = "TRUNCATE TABLE #__" . $this->getDailyStatsTableName(); 
     	$db->setQuery($query);
 		$db->query();
 		
