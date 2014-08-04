@@ -57,8 +57,8 @@ class DailyStatsDao {
     			// protecting for duplicate insertion of daily stats data
     			
     			$mailSubject = 'Dailystats Cron LAUNCHED AGAIN ON SAME DAY';
-				$entry = array ('LEVEL' => '1', 'STATUS' => 'INFO:', 'COMMENT' => "Daily stats for today already exist in daily_stats table. No data inserted." );
-				self::logAndMail($mailSubject, $entry);
+				$message = "Daily stats for today already exist in daily_stats table. No data inserted.";
+				self::logAndMail($mailSubject, $message);
     			return;
     		}
     		
@@ -73,7 +73,7 @@ class DailyStatsDao {
       									(article_id, attachment_id, date, total_hits_to_date, date_hits, total_downloads_to_date, date_downloads) 
 									SELECT T2.id AS article_id, T1.id as attachment_id, CURRENT_DATE, T2.hits, T2.hits - T3.total_hits_to_date, T1.download_count,  T1.download_count - T3.total_downloads_to_date
 									FROM $attachmentsTableName T1, $contentTableName T2, $dailyStatsTableName T3
-									WHERE T1.published = 1 AND T1.user_field_2 != 1 AND T1.parent_id = T2.id AND T2.id = T3.article_id AND T1.id = T3.attachment_id AND DATE_SUB(CURRENT_DATE,INTERVAL $gap DAY) = T3.date;";
+									WHERE T1.state = 1 AND T1.user_field_2 != 1 AND T1.parent_id = T2.id AND T2.id = T3.article_id AND T1.id = T3.attachment_id AND DATE_SUB(CURRENT_DATE,INTERVAL $gap DAY) = T3.date;";
 	    		
 		    	$rowsNumberForExistingAttachments = self::executeInsertQuery($db, $dailyStatsQuery, $log);
 		    	
@@ -91,7 +91,7 @@ class DailyStatsDao {
 				    		WHERE T1.parent_id = T2.id AND T2.state = 1 AND T1.id IN (
 					    		SELECT T1.id
 					    		FROM $attachmentsTableName T1 LEFT JOIN $dailyStatsTableName ON T1.id = $dailyStatsTableName" . ".attachment_id
-					    		WHERE T1.published = 1 AND T1.user_field_2 != 1 AND $dailyStatsTableName" . ".attachment_id IS NULL);";
+					    		WHERE T1.state = 1 AND T1.user_field_2 != 1 AND $dailyStatsTableName" . ".attachment_id IS NULL);";
     		$rowsNumberForNewAttachments = self::executeInsertQuery($db, $query, $log);
     		
     		// if new attachments were inserted in DB, obtain the download count of each new attachment in order to log this
@@ -101,13 +101,13 @@ class DailyStatsDao {
        		}
     		
     		if ($gap > MAX_DAY_INTERVAL) {
-    			$entry = array ('LEVEL' => '1', 'STATUS' => 'ERROR:', 'COMMENT' => "Daily stats for $today added in DB. $rowsNumberForNewAttachments rows inserted for new attachment(s). $rowsNumberForExistingAttachments rows inserted for existing attachments. GAP EXCEEDS MAX INTERVAL OF " . MAX_DAY_INTERVAL . " DAYS !" );
+    			$message = "Daily stats for $today added in DB. $rowsNumberForNewAttachments rows inserted for new attachment(s). $rowsNumberForExistingAttachments rows inserted for existing attachments. GAP EXCEEDS MAX INTERVAL OF " . MAX_DAY_INTERVAL . " DAYS !";
     			$mailSubject = 'Dailystats Cron ERROR';
     		} else if ($gap > 1) {
-   				$entry = array ('LEVEL' => '1', 'STATUS' => 'ERROR:', 'COMMENT' => "Daily stats for $today added in DB. $rowsNumberForNewAttachments rows inserted for new attachment(s). $rowsNumberForExistingAttachments rows inserted for existing attachments. GAP EXCEEDS 1 DAY (gap filled: $gap day(s)). " );
+   				$message = "Daily stats for $today added in DB. $rowsNumberForNewAttachments rows inserted for new attachment(s). $rowsNumberForExistingAttachments rows inserted for existing attachments. GAP EXCEEDS 1 DAY (gap filled: $gap day(s)). ";
    				$mailSubject = 'Dailystats Cron ERROR';
     		} else {
-    			$entry = array ('LEVEL' => '1', 'STATUS' => 'INFO:', 'COMMENT' => "Daily stats for $today added in DB. $rowsNumberForNewAttachments rows inserted for new attachment(s). $rowsNumberForExistingAttachments rows inserted for existing attachments (gap filled: $gap day(s)). " );
+    			$message = "Daily stats for $today added in DB. $rowsNumberForNewAttachments rows inserted for new attachment(s). $rowsNumberForExistingAttachments rows inserted for existing attachments (gap filled: $gap day(s)). ";
     			$mailSubject = "Dailystats Cron completed. New $rowsNumberForNewAttachments. Existing $rowsNumberForExistingAttachments.";
     		}
     	} else {
@@ -116,7 +116,7 @@ class DailyStatsDao {
          				(article_id, attachment_id, date, total_hits_to_date, date_hits, total_downloads_to_date, date_downloads)
 					SELECT T1.parent_id, T1.id, CURRENT_DATE, T2.hits, T2.hits, T1.download_count, T1.download_count
 					FROM $attachmentsTableName T1, $contentTableName T2
-					WHERE T1.published = 1 AND T1.user_field_2 != 1 AND T1.parent_id = T2.id AND T2.state = 1;";
+					WHERE T1.state = 1 AND T1.user_field_2 != 1 AND T1.parent_id = T2.id AND T2.state = 1;";
 	    	$rowsNumber = self::executeInsertQuery($db, $query, $log);
 
      		if ($rowsNumber > 0) {
@@ -126,10 +126,10 @@ class DailyStatsDao {
  //    		self::executeQuery ( $db, "UPDATE $dailyStatsTableName SET date=DATE_SUB(date,INTERVAL 1 DAY);" ); only for creating test data !!
 	    	
     		$mailSubject = "Dailystats Cron completed. New $rowsNumber. Existing 0.";
-			$entry = array ('LEVEL' => '1', 'STATUS' => 'INFO:', 'COMMENT' => "daily_stats table successfully bootstraped. $rowsNumber rows inserted.");
+			$message = "daily_stats table successfully bootstraped. $rowsNumber rows inserted.";
     	}
     	
-    	self::logAndMail($mailSubject,$entry,$downloadCountString);
+    	self::logAndMail($mailSubject,$message,$downloadCountString);
      }
      
      /**
@@ -156,24 +156,25 @@ class DailyStatsDao {
      	return $retStr;
      }
      
-	 private static function executeInsertQuery(JDatabase $db, $query, $log) {
+	 private static function executeInsertQuery(JDatabaseDriver $db, $query, $log) {
 		$db->setQuery ( $query );
-		$db->query ();
 		
-		if ($db->getErrorNum ()) {
-			$errorMsg = $db->getErrorMsg ();
+		try {
+			$db->execute();
+		} catch(Exception $e) {
+			$errorMsg = $e->getMessage();
 			//print_r( $e );
-			$entry = array ('LEVEL' => '1', 'STATUS' => 'ERROR:', 'COMMENT' => "INVALID DAILY_STATS RECORD ENCOUNTERED. CRON JOB ABORTED. NO DATA INSERTED. NEEDS IMMEDIATE FIX !\r\nERROR MSG FOLLOWS:\r\n$errorMsg\r\n" );
-			self::logAndMail('Dailystats Cron ERROR',$entry);
-			
+			$message = "INVALID DAILY_STATS RECORD ENCOUNTERED. CRON JOB ABORTED. NO DATA INSERTED. NEEDS IMMEDIATE FIX !\r\nERROR MSG FOLLOWS:\r\n$errorMsg\r\n";
+			self::logAndMail('Dailystats Cron ERROR',$message);
+				
 			// throwing an exception instead of using JError::raiseError() makes it possible to
 			// unit test the caae causing the exception. In the browser, this simply results in
 			// a regular PHP orange error page which displays much more useful infos than JError does !
-			// And anyway, we are in a CRON triggered action. No user would see such a page !
-//			JError::raiseError ( 500, $errorMsg );
-
+			// And anyway, we are in a CRON triggered action. No user would see such a page ! And
+			// anyway, JError is deprecated in Joomla 3 !
+			//			JError::raiseError ( 500, $errorMsg );
+			
 			throw new Exception($errorMsg);
-			return;
 		}
 		
 		return $db->getAffectedRows();
@@ -189,58 +190,72 @@ class DailyStatsDao {
 		$rowsNumberForNewAttachments = 9;
 		$rowsNumberForExistingAttachments = 99;
 		$gap = 11;
-		$entry = array ('LEVEL' => '1', 'STATUS' => 'INFO:', 'COMMENT' => "Daily stats for $today added in DB. $rowsNumberForNewAttachments rows inserted for new attachment(s). $rowsNumberForExistingAttachments rows inserted for existing attachments (gap filled: $gap day(s)). " );
+		$message = "Daily stats for $today added in DB. $rowsNumberForNewAttachments rows inserted for new attachment(s). $rowsNumberForExistingAttachments rows inserted for existing attachments (gap filled: $gap day(s)). ";
 		
 		$retStr = "\r\n\r\n";
 		$retStr .= "filename_one.mp3" . ": " . "11" . " downloads.\r\n";
 		$retStr .= "filename_two.mp3" . ": " . "222" . " downloads.\r\n";
 		
-	 	self::logAndMail($mailSubject, $entry, $retStr);
+	 	self::logAndMail($mailSubject, $message, $retStr);
 	 }
 	 
-	 private static function logAndMail($subject, $entry, $downloadCountString = '') {
-    	$log = JLog::getInstance("com_dailystats_log.php");
-	 	$log->addEntry($entry);
-	 	 
-	 	if (defined('PHPUNIT_EXECUTION')) {
-	 		return;
-	 	}
-	 	
-	 	// fetch the site's email address and name from the global configuration. These are set in the 
-	 	// administration back-end (Global Configuration -> Server -> Mail Settings)
-	 	
-	 	/* @var $mailThis JFactory */
-		$config = JFactory::getConfig();
-		$adminMail = array( 
-			$config->getValue( 'config.mailfrom' ),
-			$config->getValue( 'config.fromname' ) );
- 
-	 	/* @var $mailThis JMail */
-	 	$mailThis = JFactory::getMailer();
-		$mailThis->setSender($adminMail);
-//	 	$mailThis->addRecipient($adminMail); // Joomla 3
-	 	$mailThis->addRecipient($adminMail[0]); // Joomla 1.5
-	 	$mailThis->setSubject($subject);
-	 	
-	 	if (isset($downloadCountString) && strlen($downloadCountString) > 1) {
-	 		$mailThis->setBody($entry['COMMENT'] . $downloadCountString);
-	 	} else {
-	 		$mailThis->setBody($entry['COMMENT']);
-	 	}
-	 	
-	 	$mailThis->Send();
-	 }
+	private static function logAndMail($subject, $message, $downloadCountString = '') {
+		JLog::addLogger ( array (
+				// Sets log file name
+				'text_file' => 'com_dailystats_log.php',
+				// Sets the format of each line
+            	'text_entry_format' => '{DATETIME} {MESSAGE}' ), 
+				// Sets messages of all log levels to be sent to the file
+				JLog::ALL, 
+				// The log category/categories which should be recorded in this file
+				// In this case, it's just the one category from our extension, still
+				// we need to put it inside an array
+				array (
+						'com_dailystats' ) );
+		
+		JLog::add ( $message, JLog::INFO, 'com_dailystats' );
+		
+		if (defined ( 'PHPUNIT_EXECUTION' )) {
+			return;
+		}
+		
+		// fetch the site's email address and name from the global configuration. These are set in the
+		// administration back-end (Global Configuration -> Server -> Mail Settings)
+		
+		/* @var $mailThis JFactory */
+		$config = JFactory::getConfig ();
+		$adminMail = array (
+				$config->getValue ( 'config.mailfrom' ),
+				$config->getValue ( 'config.fromname' ) 
+		);
+		
+		/* @var $mailThis JMail */
+		$mailThis = JFactory::getMailer ();
+		$mailThis->setSender ( $adminMail );
+		// $mailThis->addRecipient($adminMail); // Joomla 3
+		$mailThis->addRecipient ( $adminMail [0] ); // Joomla 1.5
+		$mailThis->setSubject ( $subject );
+		
+		if (isset ( $downloadCountString ) && strlen ( $downloadCountString ) > 1) {
+			$mailThis->setBody ( $message . $downloadCountString );
+		} else {
+			$mailThis->setBody ( $message );
+		}
+		
+		$mailThis->Send ();
+	}
 
-     private static function loadResult(JDatabase $db, $query) {
+     private static function loadResult(JDatabaseDriver $db, $query) {
     	$db->setQuery($query);
-    	$res = $db->loadResult();
     	
-    	if( $db->getErrorNum () ) {
-			$e = $db->getErrorMsg();
-			//print_r( $e );
-			JError::raiseError( 500, $e );
-			return null;
-    	}
+    	try {
+    		$res = $db->loadResult();
+   		} catch(Exception $e) {
+   			$errorMsg = $e->getMessage();
+   			$message = "Query \"$query\" raised an exception ($errorMsg). CRON JOB ABORTED. NO DATA INSERTED. NEEDS IMMEDIATE FIX !\r\nERROR MSG FOLLOWS:\r\n$errorMsg\r\n";
+   			self::logAndMail('Dailystats Cron ERROR',$message);
+			throw new DatabaseException($errorMsg);
+       	}
      	
     	return $res;
      }
@@ -523,12 +538,12 @@ class DailyStatsDao {
 		$qu =  "SELECT DATE_FORMAT(ds1.date,'%d-%m') as displ_date, SUM(ds1.date_hits) date_hits, SUM(ds1.total_hits_to_date) total_hits_to_date, SUM(ds1.date_downloads) date_downloads, SUM(ds1.total_downloads_to_date) total_downloads_to_date
 				FROM #__daily_stats ds1, #__content c
 				WHERE ds1.article_id = c.id
-				AND c.sectionid = $categoryId
+				AND c.catid = $categoryId
 				AND ds1.date = (
 					SELECT MAX(ds2.date)
 					FROM #__daily_stats ds2, #__content c2
 					WHERE ds2.article_id = c2.id
-					AND c2.sectionid = $categoryId)";	
+					AND c2.catid = $categoryId)";	
 		return $qu;
 	}
 	
