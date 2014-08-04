@@ -22,11 +22,15 @@ abstract class DailyStatsTestBase extends PHPUnit_Extensions_Database_TestCase {
 // 		$dbURLPHP5_3_6_andLater = 'mysql:host=localhost;dbname=plucon15_dev;charset=UTF-8';
 // 		$pdo = new PDO ( $dbURLPHP5_3_6_andLater, 'root', '' );
 
-		$dbURLBeforePHP5_3_6 = 'mysql:host=localhost;dbname=pluscon15_dev';
+		$dbURLBeforePHP5_3_6 = 'mysql:host=localhost;dbname=' . self::getDatabaseName();
 		$options = array (PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8' );
 		$pdo = new PDO ( $dbURLBeforePHP5_3_6, 'root', '', $options );	// no pw for root !
 
-		return $this->createDefaultDBConnection ( $pdo, 'plucon15_dev' );
+		return $this->createDefaultDBConnection ( $pdo, self::getDatabaseName() );
+	}
+	
+	protected function getDatabaseName() {
+		return 'joo3x_com_dailystats';	
 	}
 
 	protected function getSetUpOperation() {
