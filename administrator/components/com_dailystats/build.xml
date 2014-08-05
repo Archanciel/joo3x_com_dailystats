@@ -4,7 +4,7 @@
 
 	<property name="artifact.name" value="dailystats" />
 	<property name="joomla.root"
-		value="D:\Development\web\htdocs\plusconscient15_dev" />
+		value="D:\Development\web\htdocs\joo3x_com_dailystats" />
 	<property name="src"
 		value="${joomla.root}\administrator\components\com_${artifact.name}" />
 	<property name="front.src"

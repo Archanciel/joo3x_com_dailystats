@@ -70,3 +70,4 @@ language
 plugins
 composer
 TEST
+.externalToolBuilders
