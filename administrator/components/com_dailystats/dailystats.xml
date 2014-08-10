@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="1.6.0" method="upgrade">
+<extension type="component" version="3.3" method="upgrade">
 
 	<name>Daily Stats</name>
 	<creationDate>26 February 2013</creationDate>
 	<author>JP Schnyder</author>
-	<authorUrl>http://com.jps.dev</authorUrl>
-	<version>${extension_version}</version><!-- ${extension_version defined in ./build.properties -->
-	<copyright>com.jps.dev 2013-2015</copyright>
+	<authorEmail>webmaster@plusconscient.net</authorEmail>
+	<authorUrl>http://plusconscient.net</authorUrl>
+	<version>${extension_version}</version><!-- ${extension_version defined 
+		in ./build.properties -->
+	<copyright>plusconscient.net 2013-2018</copyright>
 	<license>GNU General Public License</license>
-	<description>Component recording (via CRON) and charting article and attachment daily historical data.</description>
+	<description>
+		Component recording (via CRON) and charting article and
+		attachment daily
+		historical data.
+	</description>
 
 	<files folder="site">
 		<filename>dailystats.php</filename>
