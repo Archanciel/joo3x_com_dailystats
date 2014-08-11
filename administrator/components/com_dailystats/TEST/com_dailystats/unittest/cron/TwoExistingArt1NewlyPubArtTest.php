@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname ( __FILE__ ) . '..\..\baseclass\DailyStatsCronTestBase.php';
+require_once dirname ( __FILE__ ) . '..\..\..\baseclass\DailyStatsCronTestBase.php';
 require_once COM_DAILYSTATS_PATH . '..\dao\dailyStatsDao.php';
 require_once COM_DAILYSTATS_PATH . '..\dailyStatsConstants.php';
 
@@ -12,7 +12,7 @@ require_once COM_DAILYSTATS_PATH . '..\dailyStatsConstants.php';
  * @author Jean-Pierre
  *
  */
-class DailyStatsDaoExecDailyStatsCron2ExistingArt1NewlyPubArtTest extends DailyStatsCronTestBase {
+class TwoExistingArt1NewlyPubArtTest extends DailyStatsCronTestBase {
 	/**
 	 * Tests daily stats rec generation for 2 articles published in the past (id = 1, 2) and 1 newly 
 	 * published article, with 1 attachment each, in a daily stats table with 1 daily stat rec for each
@@ -284,7 +284,7 @@ class DailyStatsDaoExecDailyStatsCron2ExistingArt1NewlyPubArtTest extends DailyS
 	 * @return xml dataset
 	 */
 	protected function getDataSet() {
-		return $this->createXMLDataSet ( dirname ( __FILE__ ) . '\..\data\dailyStatsCron_2_old_article_1_new_article_test_data.xml' );
+		return $this->createXMLDataSet ( dirname ( __FILE__ ) . '\..\..\data\cron\2_old_article_1_new_article_test_data.xml' );
 	}
 }
 

@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname ( __FILE__ ) . '..\..\baseclass\DailyStatsTestBase.php';
+require_once dirname ( __FILE__ ) . '..\..\..\baseclass\DailyStatsTestBase.php';
 require_once COM_DAILYSTATS_PATH . '..\dao\dailyStatsDao.php';
 require_once COM_DAILYSTATS_PATH . '..\dailyStatsConstants.php';
 
@@ -161,7 +161,7 @@ class DailyStatsDaoTest extends DailyStatsTestBase {
 	 * @return xml dataset
 	 */
 	protected function getDataSet() {
-//		return $this->createXMLDataSet ( dirname ( __FILE__ ) . '\..\data\1_category_1_article_test_data.xml' );
+//		return $this->createXMLDataSet ( dirname ( __FILE__ ) . '\..\data\dailystatscalc\1_category_1_article_test_data.xml' );
 	}
 }
 

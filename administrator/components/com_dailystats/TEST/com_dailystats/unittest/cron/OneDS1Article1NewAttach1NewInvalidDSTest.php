@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname ( __FILE__ ) . '..\..\baseclass\DailyStatsCronTestBase.php';
+require_once dirname ( __FILE__ ) . '..\..\..\baseclass\DailyStatsCronTestBase.php';
 require_once COM_DAILYSTATS_PATH . '..\dao\dailyStatsDao.php';
 require_once COM_DAILYSTATS_PATH . '..\dailyStatsConstants.php';
 
@@ -15,7 +15,7 @@ require_once COM_DAILYSTATS_PATH . '..\dailyStatsConstants.php';
  * @author Jean-Pierre
  *
  */
-class DailyStatsDaoExecDailyStatsCron1DS1Article1NewAttach1NewInvalidDSTest extends DailyStatsCronTestBase {
+class OneDS1Article1NewAttach1NewInvalidDSTest extends DailyStatsCronTestBase {
 	/**
 	 * Tests daily stats rec generation for 1 article with 1 attachment in a daily stats table
 	 * with 1 daily stat rec dated 1 day before cron execution.
@@ -60,7 +60,7 @@ class DailyStatsDaoExecDailyStatsCron1DS1Article1NewAttach1NewInvalidDSTest exte
 	 * @return xml dataset
 	 */
 	protected function getDataSet() {
-		return $this->createXMLDataSet ( dirname ( __FILE__ ) . '\..\data\dailyStatsCron_1_DS_1_article_test_1_new_attach_1_new_inval_DS_data.xml' );
+		return $this->createXMLDataSet ( dirname ( __FILE__ ) . '\..\..\data\cron\1_DS_1_article_test_1_new_attach_1_new_inval_DS_data.xml' );
 	}
 }
 

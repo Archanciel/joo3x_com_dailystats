@@ -1,22 +1,23 @@
 <?php
 
-require_once dirname ( __FILE__ ) . '..\..\baseclass\DailyStatsCronTestBase.php';
+require_once dirname ( __FILE__ ) . '..\..\..\baseclass\DailyStatsCronTestBase.php';
 require_once COM_DAILYSTATS_PATH . '..\dao\dailyStatsDao.php';
 require_once COM_DAILYSTATS_PATH . '..\dailyStatsConstants.php';
 
 /**
  * This class nsures that when executing a daily stats cron on a db containing 1 published article
- * with one attachment , in an empty daily stats table, 1 daily stats rec is generated.
+ * with one main attachment and one secondary attachment, in an empty daily stats table, only 1 daily 
+ * stats rec is generated for the main attachment only.
  * 
  * @author Jean-Pierre
  *
  */
-class DailyStatsDaoExecDailyStatsCronEmptyDailyStatsTableOneArticleTest extends DailyStatsCronTestBase {
+class EmptyDailyStatsTableOneArticle1SecondaryAttachmentTest extends DailyStatsCronTestBase {
 	/**
 	 * Tests daily stats rec generation for 1 article with 1 attachment in an empty daily stats 
 	 * table
 	 */
-	public function testExecDailyStatsCronEmptyDailyStatsTableOneArticle() {
+	public function testExecDailyStatsCronEmptyDailyStatsTableOneArticle1MainAtt1SecAtt() {
 		DailyStatsDao::execDailyStatsCron("#__" . $this->getDailyStatsTableName(),"#__attachments_cron_test","#__content_cron_test");
      	/* @var $db JDatabase */
     	$db = JFactory::getDBO();
@@ -24,7 +25,7 @@ class DailyStatsDaoExecDailyStatsCronEmptyDailyStatsTableOneArticleTest extends 
     	$db->setQuery($query);
     	$count = $db->loadResult();
 
-		$this->assertEquals(1,$count,'1 daily_stats records expected');
+		$this->assertEquals(1,$count,'1 daily_stats records expected (1 for the main attachment, 0 for the secondary attachment');
 		
 		$today = date("Y-m-d");
 		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 1"; 
@@ -60,7 +61,7 @@ class DailyStatsDaoExecDailyStatsCronEmptyDailyStatsTableOneArticleTest extends 
 	 * @return xml dataset
 	 */
 	protected function getDataSet() {
-		return $this->createXMLDataSet ( dirname ( __FILE__ ) . '\..\data\dailyStatsCron_empty_dstable_1_article_test_data.xml' );
+		return $this->createXMLDataSet ( dirname ( __FILE__ ) . '\..\..\data\cron\empty_dstable_1_article_2_attach_test_data.xml' );
 	}
 }
 

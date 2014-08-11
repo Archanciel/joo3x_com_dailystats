@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname ( __FILE__ ) . '..\..\baseclass\DailyStatsCronTestBase.php';
+require_once dirname ( __FILE__ ) . '..\..\..\baseclass\DailyStatsCronTestBase.php';
 require_once COM_DAILYSTATS_PATH . '..\dao\dailyStatsDao.php';
 require_once COM_DAILYSTATS_PATH . '..\dailyStatsConstants.php';
 
@@ -23,7 +23,7 @@ require_once COM_DAILYSTATS_PATH . '..\dailyStatsConstants.php';
  * @author Jean-Pierre
  *
  */
-class DailyStatsDaoExecDailyStatsCron1DS1Article2DuplicatedAttach1UnpubAttach2NewValidDSUsrField2Used1InvalidDSTest extends DailyStatsCronTestBase {
+class OneDS1Article2DuplicatedAttach1UnpubAttach2NewValidDSUsrField2Used1InvalidDSTest extends DailyStatsCronTestBase {
 	public function testExecDailyStatsCron2NewAttach1UnpubAttach() { 
   		// update first DS rec date
 		$this->updateDailyStatRec(1,date("Y-m-d",strtotime("-2 day")));
@@ -84,7 +84,7 @@ class DailyStatsDaoExecDailyStatsCron1DS1Article2DuplicatedAttach1UnpubAttach2Ne
 	 * @return xml dataset
 	 */
 	protected function getDataSet() {
-		return $this->createXMLDataSet ( dirname ( __FILE__ ) . '\..\data\dailyStatsCron_1_DS_1_article_test_2_dupl_attach_1_unpub_attach_1_new_valid_DS_data_usr_field2_used_1_inval_DS_for_sec_atta.xml' );
+		return $this->createXMLDataSet ( dirname ( __FILE__ ) . '\..\..\data\cron\1_DS_1_article_test_2_dupl_attach_1_unpub_attach_1_new_valid_DS_data_usr_field2_used_1_inval_DS_for_sec_atta.xml' );
 	}
 }
 
