@@ -3,9 +3,6 @@
 // We are a valid Joomla entry point.
 define ( '_JEXEC', 1 );
 
-// Setup the path related constants.
-define ( 'DS', DIRECTORY_SEPARATOR );
-
 // Once your tests run smoothly, you may comment out the next line. Without it,
 // PHPUnit will fail silently, even in --verbose mode, every time a Joomla! framework
 // include/require is missing ! An alternative is the PHPUnit -d display_errors=On 
@@ -13,9 +10,9 @@ define ( 'DS', DIRECTORY_SEPARATOR );
 ini_set('display_errors', 'on');
 
 // Load PHPUnit plus DB extensions
-//require_once 'PHPUnit' . DS . 'Framework.php';
-require_once 'PHPUnit' . DS . 'Extensions' . DS . 'Database' . DS . 'TestCase.php';
-require_once 'PHPUnit' . DS . 'Extensions' . DS . 'Database' . DS . 'DataSet' . DS . 'XmlDataSet.php';
+//require_once 'PHPUnit' . DIRECTORY_SEPARATOR . 'Framework.php';
+require_once 'PHPUnit' . DIRECTORY_SEPARATOR . 'Extensions' . DIRECTORY_SEPARATOR . 'Database' . DIRECTORY_SEPARATOR . 'TestCase.php';
+require_once 'PHPUnit' . DIRECTORY_SEPARATOR . 'Extensions' . DIRECTORY_SEPARATOR . 'Database' . DIRECTORY_SEPARATOR . 'DataSet' . DIRECTORY_SEPARATOR . 'XmlDataSet.php';
 
 // For Zend Studio 8.0 ...
 //require_once 'PHPUnit\Extensions\Database\TestCase.php';
@@ -23,22 +20,22 @@ require_once 'PHPUnit' . DS . 'Extensions' . DS . 'Database' . DS . 'DataSet' . 
 
 define ( 'JPATH_BASE', dirname ( dirname ( dirname ( dirname ( dirname ( dirname ( __FILE__ ) ) ) ) ) ) );
 define ( 'JPATH_ROOT', JPATH_BASE );
-define ( 'JPATH_ADMINISTRATOR', JPATH_BASE . DS . 'administrator' );
+define ( 'JPATH_ADMINISTRATOR', JPATH_BASE . DIRECTORY_SEPARATOR . 'administrator' );
 define ( 'JPATH_CONFIGURATION', JPATH_BASE );
-define ( 'JPATH_LIBRARIES', JPATH_BASE . DS . 'libraries' );
-define ( 'JPATH_LIBRARIES_JOOMLA', JPATH_LIBRARIES . DS . 'joomla' );
-define ( 'JPATH_METHODS', JPATH_ROOT . DS . 'methods' );
+define ( 'JPATH_LIBRARIES', JPATH_BASE . DIRECTORY_SEPARATOR . 'libraries' );
+define ( 'JPATH_LIBRARIES_JOOMLA', JPATH_LIBRARIES . DIRECTORY_SEPARATOR . 'joomla' );
+define ( 'JPATH_METHODS', JPATH_ROOT . DIRECTORY_SEPARATOR . 'methods' );
 
 // Load the library importer, datbase + table classes and configuration
-require_once (JPATH_LIBRARIES . DS . 'import.legacy.php');
-require_once (JPATH_LIBRARIES . DS . 'legacy' . DS . 'request' . DS . 'request.php');
-require_once (JPATH_LIBRARIES . DS . 'cms' . DS . 'version' . DS . 'version.php');
-require_once (JPATH_LIBRARIES_JOOMLA . DS . 'object' . DS . 'object.php');
+require_once (JPATH_LIBRARIES . DIRECTORY_SEPARATOR . 'import.legacy.php');
+require_once (JPATH_LIBRARIES . DIRECTORY_SEPARATOR . 'legacy' . DIRECTORY_SEPARATOR . 'request' . DIRECTORY_SEPARATOR . 'request.php');
+require_once (JPATH_LIBRARIES . DIRECTORY_SEPARATOR . 'cms' . DIRECTORY_SEPARATOR . 'version' . DIRECTORY_SEPARATOR . 'version.php');
+require_once (JPATH_LIBRARIES_JOOMLA . DIRECTORY_SEPARATOR . 'object' . DIRECTORY_SEPARATOR . 'object.php');
 
-require_once (JPATH_LIBRARIES_JOOMLA . DS . 'database' . DS . 'database.php');
-require_once (JPATH_LIBRARIES_JOOMLA . DS . 'table' . DS . 'table.php');
-require_once (JPATH_CONFIGURATION . DS . 'configuration.php');
-require_once (JPATH_LIBRARIES . DS . 'cms.php');
+require_once (JPATH_LIBRARIES_JOOMLA . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'database.php');
+require_once (JPATH_LIBRARIES_JOOMLA . DIRECTORY_SEPARATOR . 'table' . DIRECTORY_SEPARATOR . 'table.php');
+require_once (JPATH_CONFIGURATION . DIRECTORY_SEPARATOR . 'configuration.php');
+require_once (JPATH_LIBRARIES . DIRECTORY_SEPARATOR . 'cms.php');
 
 // Load the TestLoader
 require_once dirname ( __FILE__ ) . '\TestLoader.php';

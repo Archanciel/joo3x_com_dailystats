@@ -57,12 +57,6 @@ class OneDS1Article1DuplicatedAttach1UnpubAttach1NewValidDSTest extends DailySta
 	}
 	
 	public function tearDown() {
-     	/* @var $db JDatabase */
-    	$db = JFactory::getDBO();
-		$query = "TRUNCATE TABLE #__" . $this->getDailyStatsTableName(); 
-    	$db->setQuery($query);
-		$db->query();
-		
 		parent::tearDown();
 	}
 	

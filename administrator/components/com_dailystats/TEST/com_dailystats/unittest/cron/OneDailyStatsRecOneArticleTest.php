@@ -158,12 +158,6 @@ class OneDailyStatsRecOneArticleTest extends DailyStatsCronTestBase {
 	}
 	
 	public function tearDown() {
-     	/* @var $db JDatabase */
-    	$db = JFactory::getDBO();
-		$query = "TRUNCATE TABLE #__" . $this->getDailyStatsTableName(); 
-    	$db->setQuery($query);
-		$db->query();
-		
 		parent::tearDown();
 	}
 	

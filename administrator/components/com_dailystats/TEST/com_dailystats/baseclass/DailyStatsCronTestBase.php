@@ -64,6 +64,16 @@ abstract class DailyStatsCronTestBase extends DailyStatsTestBase {
 		return $this->daily_stats_table_name;
 	}
 	
+	
+	public function tearDown() {
+     	/* @var $db JDatabase */
+    	$db = JFactory::getDBO();
+		$query = "TRUNCATE TABLE #__" . $this->getDailyStatsTableName(); 
+    	$db->setQuery($query);
+		$db->execute();
+		
+		parent::tearDown();
+	}
 }
 
 ?>

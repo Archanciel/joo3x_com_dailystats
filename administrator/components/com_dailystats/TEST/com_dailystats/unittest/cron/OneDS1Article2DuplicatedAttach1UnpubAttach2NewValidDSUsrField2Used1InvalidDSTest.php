@@ -69,12 +69,6 @@ class OneDS1Article2DuplicatedAttach1UnpubAttach2NewValidDSUsrField2Used1Invalid
 	}
 	
 	public function tearDown() {
-     	/* @var $db JDatabase */
-    	$db = JFactory::getDBO();
-		$query = "TRUNCATE TABLE #__" . $this->getDailyStatsTableName(); 
-    	$db->setQuery($query);
-		$db->query();
-		
 		parent::tearDown();
 	}
 	
