@@ -105,7 +105,7 @@ class DailyStatsDao {
     			$mailSubject = 'Dailystats Cron ERROR';
     		} else if ($gap > 1) {
    				$message = "Daily stats for $today added in DB. $rowsNumberForNewAttachments rows inserted for new attachment(s). $rowsNumberForExistingAttachments rows inserted for existing attachments. GAP EXCEEDS 1 DAY (gap filled: $gap day(s)). ";
-   				$mailSubject = 'Dailystats Cron ERROR';
+   				$mailSubject = "Dailystats Cron completed with gap > 1 day. New $rowsNumberForNewAttachments. Existing $rowsNumberForExistingAttachments.";
     		} else {
     			$message = "Daily stats for $today added in DB. $rowsNumberForNewAttachments rows inserted for new attachment(s). $rowsNumberForExistingAttachments rows inserted for existing attachments (gap filled: $gap day(s)). ";
     			$mailSubject = "Dailystats Cron completed. New $rowsNumberForNewAttachments. Existing $rowsNumberForExistingAttachments.";
