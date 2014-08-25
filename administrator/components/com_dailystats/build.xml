@@ -50,7 +50,6 @@
 			</filterchain>
 			<fileset dir="${src}">
 				<include name="${artifact.name}.xml" />
-				<include name="joomla15.xml" />
 				<include name="site/views/**" />
 			</fileset>
 		</copy>
@@ -62,7 +61,7 @@
 		</copy>
 	</target>
 
-	<target name="build_install_zip" depends="copy_to_front_dir, build_packaging_dir"
+	<target name="build_install_zip" depends="build_packaging_dir, copy_to_front_dir"
 		description="build the install zip">
 		<delete file="${install.zip.file.dest}/com_${artifact.name}_${version}.zip" />
 		<zip destfile="${install.zip.file.dest}/com_${artifact.name}_${version}.zip">
