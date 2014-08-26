@@ -2,8 +2,8 @@
 /********************************************************************
 Product    : Daily Stats
 Date       : March 2013
-Copyright  : jps.dev
-Contact    : http://jps.dev
+Copyright  : plusconscient.net
+Contact    : webmaster@plusconscient.net
 Licence    : GNU General Public License
 Description: displays article and attached audio file access and usage 
 			 daily stats on a chart
@@ -20,7 +20,8 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.'/dailyStatsConstants.php';
 require_once JPATH_COMPONENT_ADMINISTRATOR.'/dao/dailyStatsDao.php';
 require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/dailyStatsHelper.php';
 
-$cron = JRequest::getVar ( 'cron' , 'no' );
+$input = JFactory::getApplication()->input;
+$cron = $input->get('cron' , 'no' );
 
 if (strcmp($cron,'yes') == 0) {
     DailyStatsDao::execDailyStatsCron();
@@ -57,8 +58,8 @@ $catSecRows = DailyStatsDao::getCategoriesOrSections();
 
 // get the selected category from the select list (default it to zero)
 
-$categorySectionId = JRequest::getVar('select_category_section',0);
-$previouslySelectedCategorySectionId = JRequest::getVar( 'previous_cat_sec_id', 0 );
+$categorySectionId = $input->get('select_category_section',0);
+$previouslySelectedCategorySectionId = $input->get('previous_cat_sec_id', 0);
 // echo 'Category: from request ' . $categorySectionId . ' previous from session ' . $previouslySelectedCategorySectionId , ' articleId ' . $articleId;
 
 if ($categorySectionId != $previouslySelectedCategorySectionId	&&
@@ -66,7 +67,7 @@ if ($categorySectionId != $previouslySelectedCategorySectionId	&&
 	// current category did change, so current article selection must be reset
 	$articleId = NO_ARTICLE_SELECTED;
 } else {
-	$articleId = JRequest::getVar('select_article',NO_ARTICLE_SELECTED);
+	$articleId = $input->get('select_article',NO_ARTICLE_SELECTED);
 }
 
 if ($categorySectionId == 0) {
@@ -75,7 +76,7 @@ if ($categorySectionId == 0) {
 	$categorySectionId = PHP_INT_MAX;
 } else if ($categorySectionId == PHP_INT_MAX) {
 	// here, All categories is selected in the category drop-down list
-	$chartWholeCategoryButtonPressed = (JRequest::getVar('chart_whole_category_button',NULL));
+	$chartWholeCategoryButtonPressed = $input->get('chart_whole_category_button',NULL);
 	
 	if (isset($chartWholeCategoryButtonPressed)) {
 		// Chart whole category button waa pressed
@@ -93,7 +94,7 @@ if ($categorySectionId == 0) {
 	}
 } else {
 	// get chart mode, either chart an individual article hisctrory or a category summary history
-	$chartWholeCategoryButtonPressed = (JRequest::getVar('chart_whole_category_button',NULL));
+	$chartWholeCategoryButtonPressed = $input->get('chart_whole_category_button',NULL);
 	$chartMode = (isset($chartWholeCategoryButtonPressed)) ? CHART_MODE_CATEGORY : CHART_MODE_ARTICLE;
 }
 
@@ -102,10 +103,10 @@ if ($categorySectionId == 0) {
 
 // adding a row for all categories
 
-$category_array[] = JHTML::_('select.option', PHP_INT_MAX, 'All categories');
+$category_array[] = JHtml::_('select.option', PHP_INT_MAX, 'All categories');
 
 foreach ($catSecRows as $catSecRow) {
-	$category_array[] = JHTML::_('select.option', $catSecRow->id, $catSecRow->title);
+	$category_array[] = JHtml::_('select.option', $catSecRow->id, $catSecRow->title);
 	
 	// store selected category title
 	if ($catSecRow->id == $categorySectionId) {
@@ -122,12 +123,12 @@ if ($chartMode == CHART_MODE_CATEGORY_ALL) {
 $lastAndTotalHitsTitle = ". Last ({$lastAndTotalHitsArr[DATE_IDX]}): {$lastAndTotalHitsArr[LAST_HITS_IDX]}. Total: {$lastAndTotalHitsArr[TOTAL_HITS_IDX]}.";
 $lastAndTotalDownloadsTitle = ". Last ({$lastAndTotalHitsArr[DATE_IDX]}): {$lastAndTotalHitsArr[LAST_DOWNLOADS_IDX]}. Total: {$lastAndTotalHitsArr[TOTAL_DOWNLOADS_IDX]}.";
 
-$select_category_section_list = JHTML::_('select.genericlist', $category_array, 'select_category_section',
+$select_category_section_list = JHtml::_('select.genericlist', $category_array, 'select_category_section',
 		'class="inputbox" size="1" onchange="handleSelectCategory();"', 'value', 'text', $categorySectionId);
 
 // Build an html select list of articles (include Javascript to submit the form)
 
-$article_array[] = JHTML::_('select.option', NO_ARTICLE_SELECTED, '- Select article -');
+$article_array[] = JHtml::_('select.option', NO_ARTICLE_SELECTED, '- Select article -');
 
 // get list of articles
 
@@ -144,7 +145,7 @@ if ($chartMode == CHART_MODE_CATEGORY_ALL	||
 
 if (!empty($articleRows)) {	
 	foreach ($articleRows as $articleRow) {
-		$article_array[] = JHTML::_('select.option', $articleRow->id, $articleRow->title);
+		$article_array[] = JHtml::_('select.option', $articleRow->id, $articleRow->title);
 			
 		// store selected article title
 		if ($articleRow->id == $articleId) {
@@ -171,7 +172,7 @@ switch ($chartMode) {
 		break;
 }
 
-$select_article_list = JHTML::_('select.genericlist', $article_array, 'select_article',
+$select_article_list = JHtml::_('select.genericlist', $article_array, 'select_article',
 		'class="inputbox" size="1" onchange="handleSelectArticle();"', 'value', 'text', $articleId);
 
 
@@ -208,7 +209,7 @@ echo $select_article_list;
 
 echo '</form>';
 
-$drawChart = (strcmp(JRequest::getVar('draw_chart','no'),'no') != 0);
+$drawChart = (strcmp($input->get('draw_chart','no'),'no') != 0);
 // echo '$drawChart ' . $drawChart;
 // echo ' $chartMode ' . $chartMode;
 // echo ' $categorySectionId ' . $categorySectionId;
