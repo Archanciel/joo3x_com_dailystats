@@ -7,7 +7,7 @@
 		value="D:\Development\web\htdocs\joo3x_com_dailystats" />
 	<property name="src"
 		value="${joomla.root}\administrator\components\com_${artifact.name}" />
-	<property name="front.src"
+	<property name="dev.env.front.src"
 		value="${joomla.root}\components\com_${artifact.name}" />
 	<property name="packaging.dir"
 		value="${joomla.root}\tmp\packaging\com_${artifact.name}" />
@@ -16,9 +16,9 @@
 		override="true" />
 	<property name="version">v${extension_version}</property><!-- ${extension_version defined in ./build.properties -->
 
-	<target name="copy_to_front_dir" description="Copies files to front component src dir">
-		<delete dir="${front.src}" includeemptydirs="true" verbose="false" />
-		<copy todir="${front.src}" overwrite="true">
+	<target name="copy_to_dev_env_front_dir" description="Copies files to front component dir in dev environnement">
+		<delete dir="${dev.env.front.src}" includeemptydirs="true" verbose="false" />
+		<copy todir="${dev.env.front.src}" overwrite="true">
 			<fileset dir="${src}">
 				<include name="${artifact.name}.php" />
 				<include name="index.html" />
@@ -61,7 +61,7 @@
 		</copy>
 	</target>
 
-	<target name="build_install_zip" depends="build_packaging_dir, copy_to_front_dir"
+	<target name="build_install_zip" depends="build_packaging_dir, copy_to_dev_env_front_dir"
 		description="build the install zip">
 		<delete file="${install.zip.file.dest}/com_${artifact.name}_${version}.zip" />
 		<zip destfile="${install.zip.file.dest}/com_${artifact.name}_${version}.zip">
