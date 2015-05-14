@@ -93,11 +93,12 @@ class DailyStatsDao {
 					    		FROM $attachmentsTableName T1 LEFT JOIN $dailyStatsTableName ON T1.id = $dailyStatsTableName" . ".attachment_id
 					    		WHERE T1.state = 1 AND T1.user_field_2 != 1 AND $dailyStatsTableName" . ".attachment_id IS NULL);";
     		$rowsNumberForNewAttachments = self::executeInsertQuery($db, $query, $log);
+    		$newAttachmentsDownloadCountInfo = '';
     		
     		// if new attachments were inserted in DB, obtain the download count of each new attachment in order to log this
     		// information. This will alert of any problem preventing successful download of the attachment. 
     		if ($rowsNumberForNewAttachments > 0) {
-    			$downloadCountString = self::retrieveDownloadCountForNewAttachments($rowsNumberForNewAttachments, $dailyStatsTableName, $attachmentsTableName);
+    			$newAttachmentsDownloadCountInfo = self::retrieveDownloadCountForNewAttachments($rowsNumberForNewAttachments, $dailyStatsTableName, $attachmentsTableName);
        		}
     		
     		if ($gap > MAX_DAY_INTERVAL) {
@@ -120,7 +121,7 @@ class DailyStatsDao {
 	    	$rowsNumber = self::executeInsertQuery($db, $query, $log);
 
      		if ($rowsNumber > 0) {
-    			$downloadCountString = self::retrieveDownloadCountForNewAttachments($rowsNumber, $dailyStatsTableName, $attachmentsTableName);
+    			$newAttachmentsDownloadCountInfo = self::retrieveDownloadCountForNewAttachments($rowsNumber, $dailyStatsTableName, $attachmentsTableName);
        		}
 	    	
  //    		self::executeQuery ( $db, "UPDATE $dailyStatsTableName SET date=DATE_SUB(date,INTERVAL 1 DAY);" ); only for creating test data !!
@@ -129,10 +130,25 @@ class DailyStatsDao {
 			$message = "daily_stats table successfully bootstraped. $rowsNumber rows inserted.";
     	}
     	
-    	self::logAndMail($mailSubject,$message,$downloadCountString);
+    	$lastTotalDownloadCountInfo = self::retrieveLastTotalDownloadCountInfo();
+    	 
+//    	self::logAndMail($mailSubject,$message,$downloadCountString);
+    	self::logAndMail($mailSubject,$message,$newAttachmentsDownloadCountInfo . $lastTotalDownloadCountInfo);
      }
+
+     private static function retrieveLastTotalDownloadCountInfo() {
+     	$lastDownloadCountString = "\r\n\r\n";
+     	 
+     	$array = self::getLastAndTotalHitsAndDownloadsArrForAllCategories();
+     	$date = $array[DATE_IDX];
+     	$dateDownloadCount = $array[LAST_DOWNLOADS_IDX];
+     	$lastDownloadCountString .= "Total downloads for $date: $dateDownloadCount.\r\n";
      
+     	return $lastDownloadCountString;
+     }
+      
      /**
+      * Obtain the download count of each new attachment.
       * 
 	  * @param String $dailyStatsTableName
       * @param int $newAttachmentsNumber
@@ -150,7 +166,7 @@ class DailyStatsDao {
      	$retStr = "\r\n\r\n";
      	
      	foreach ($rows as $row) {
-     		$retStr .= $row->filename . ": " . $row->date_downloads . " downloads.\r\n";
+     		$retStr .= $row->filename . ": " . $row->date_downloads . " downloads.";
      	}
 
      	return $retStr;
@@ -216,6 +232,7 @@ class DailyStatsDao {
 		JLog::add ( $message, JLog::INFO, 'com_dailystats' );
 		
 		if (defined ( 'PHPUNIT_EXECUTION' )) {
+			JLog::add ( $downloadCountString, JLog::INFO, 'com_dailystats' );
 			return;
 		}
 		
@@ -456,24 +473,29 @@ class DailyStatsDao {
 				$ret[TOTAL_DOWNLOADS_IDX] = $rows[0]->total_downloads_to_date;
 				break;
 			case CHART_MODE_CATEGORY_ALL:
-				if(version_compare(JVERSION,'1.6.0','ge')) {
-					$excludedCategories = EXCLUDED_J16_CATEGORIES_SET;
-				} else {
-					$excludedCategories = EXCLUDED_J15_SECTIONS_SET;
-				}
-				
-				$qu = self::getLastAndTotalHitsAndDownloadsForAllCategoriesQuery($excludedCategories);
-				$rows = self::executeQuery($qu);
-				
-				$ret[DATE_IDX] = $rows[0]->displ_date;
-				$ret[LAST_HITS_IDX] = $rows[0]->date_hits;
-				$ret[TOTAL_HITS_IDX] = $rows[0]->total_hits_to_date;
-				$ret[LAST_DOWNLOADS_IDX] = $rows[0]->date_downloads;
-				$ret[TOTAL_DOWNLOADS_IDX] = $rows[0]->total_downloads_to_date;
+				$ret = self::getLastAndTotalHitsAndDownloadsArrForAllCategories();
 				break;
 			default:
 				break;
 		}
+
+		return $ret;
+	}
+
+	/**
+	 * Returns date hits and downloads plus total hits and downloads to date in an array.
+	 * 
+	 * @return array
+	 */
+	private static function getLastAndTotalHitsAndDownloadsArrForAllCategories() {
+		$qu = self::getLastAndTotalHitsAndDownloadsForAllCategoriesQuery();
+		$rows = self::executeQuery($qu);
+		
+		$ret[DATE_IDX] = $rows[0]->displ_date;
+		$ret[LAST_HITS_IDX] = $rows[0]->date_hits;
+		$ret[TOTAL_HITS_IDX] = $rows[0]->total_hits_to_date;
+		$ret[LAST_DOWNLOADS_IDX] = $rows[0]->date_downloads;
+		$ret[TOTAL_DOWNLOADS_IDX] = $rows[0]->total_downloads_to_date;
 
 		return $ret;
 	}
@@ -547,11 +569,20 @@ class DailyStatsDao {
 		return $qu;
 	}
 	
-	private static function getLastAndTotalHitsAndDownloadsForAllCategoriesQuery($excludedCategories) {
+	private static function getLastAndTotalHitsAndDownloadsForAllCategoriesQuery() {
+		// category id 135 is the id of the audio parent category
 		$qu =  "SELECT DATE_FORMAT(s.date,'%d-%m') as displ_date, SUM(s.date_hits) date_hits, SUM(s.total_hits_to_date) total_hits_to_date, SUM(s.date_downloads) date_downloads, SUM(s.total_downloads_to_date) total_downloads_to_date
 				FROM #__daily_stats AS s, #__content as c
 				WHERE s.article_id = c.id
-				AND c.sectionid NOT IN ($excludedCategories)
+				AND c.catid IN (
+					SELECT id
+					FROM #__categories
+					WHERE parent_id	IN (
+						SELECT id
+						FROM #__categories
+						WHERE parent_id = 135
+					)
+				)
 				AND s.date = (
 					SELECT MAX(date)
 					FROM #__daily_stats)";
