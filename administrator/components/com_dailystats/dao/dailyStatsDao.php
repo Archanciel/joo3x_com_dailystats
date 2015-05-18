@@ -130,16 +130,16 @@ class DailyStatsDao {
 			$message = "daily_stats table successfully bootstraped. $rowsNumber rows inserted.";
     	}
     	
-    	$lastTotalDownloadCountInfo = self::retrieveLastTotalDownloadCountInfo();
+    	$lastTotalDownloadCountInfo = self::retrieveLastTotalDownloadCountInfo($dailyStatsTableName,$contentTableName);
     	 
 //    	self::logAndMail($mailSubject,$message,$downloadCountString);
     	self::logAndMail($mailSubject,$message,$newAttachmentsDownloadCountInfo . $lastTotalDownloadCountInfo);
      }
 
-     private static function retrieveLastTotalDownloadCountInfo() {
+     private static function retrieveLastTotalDownloadCountInfo($dailyStatsTableName,$contentTableName) {
      	$lastDownloadCountString = "\r\n\r\n";
      	 
-     	$array = self::getLastAndTotalHitsAndDownloadsArrForAllCategories();
+     	$array = self::getLastAndTotalHitsAndDownloadsArrForAllCategories($dailyStatsTableName,$contentTableName);
      	$date = $array[DATE_IDX];
      	$dateDownloadCount = $array[LAST_DOWNLOADS_IDX];
      	$lastDownloadCountString .= "Total downloads for $date: $dateDownloadCount.\r\n";
@@ -487,8 +487,8 @@ class DailyStatsDao {
 	 * 
 	 * @return array
 	 */
-	private static function getLastAndTotalHitsAndDownloadsArrForAllCategories() {
-		$qu = self::getLastAndTotalHitsAndDownloadsForAllCategoriesQuery();
+	private static function getLastAndTotalHitsAndDownloadsArrForAllCategories($dailyStatsTableName,$contentTableName) {
+		$qu = self::getLastAndTotalHitsAndDownloadsForAllCategoriesQuery($dailyStatsTableName,$contentTableName);
 		$rows = self::executeQuery($qu);
 		
 		$ret[DATE_IDX] = $rows[0]->displ_date;
@@ -569,10 +569,12 @@ class DailyStatsDao {
 		return $qu;
 	}
 	
-	private static function getLastAndTotalHitsAndDownloadsForAllCategoriesQuery() {
+	private static function getLastAndTotalHitsAndDownloadsForAllCategoriesQuery($dailyStatsTableName,$contentTableName) {
 		// category id 135 is the id of the audio parent category
+		$audio_cat_id = AUDIO_CATEGORY_ID;
+		
 		$qu =  "SELECT DATE_FORMAT(s.date,'%d-%m') as displ_date, SUM(s.date_hits) date_hits, SUM(s.total_hits_to_date) total_hits_to_date, SUM(s.date_downloads) date_downloads, SUM(s.total_downloads_to_date) total_downloads_to_date
-				FROM #__daily_stats AS s, #__content as c
+				FROM $dailyStatsTableName AS s, $contentTableName as c
 				WHERE s.article_id = c.id
 				AND c.catid IN (
 					SELECT id
@@ -580,12 +582,12 @@ class DailyStatsDao {
 					WHERE parent_id	IN (
 						SELECT id
 						FROM #__categories
-						WHERE parent_id = 135
+						WHERE parent_id = $audio_cat_id
 					)
 				)
 				AND s.date = (
 					SELECT MAX(date)
-					FROM #__daily_stats)";
+					FROM $dailyStatsTableName)";
 		return $qu;
 	}
 }

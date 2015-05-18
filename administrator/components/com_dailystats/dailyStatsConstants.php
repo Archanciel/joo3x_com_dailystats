@@ -13,6 +13,8 @@ Based on   : SimplePlot from Les Arbres Design
 
 defined('_JEXEC') or die('Restricted Access');
 
+define('AUDIO_CATEGORY_ID',135);
+
 define('CHART_X_SIZE',1375);
 define('MAX_PLOT_POINTS',620);	// floor(CHART_X_SIZE / 2.2);
 define('NO_ARTICLE_SELECTED',0);

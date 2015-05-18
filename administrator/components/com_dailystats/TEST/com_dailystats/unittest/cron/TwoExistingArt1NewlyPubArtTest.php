@@ -40,7 +40,8 @@ class TwoExistingArt1NewlyPubArtTest extends DailyStatsCronTestBase {
 		$this->assertEquals(5,$count,'5 daily_stats records expected, 2 for yesterday and 3 for today');
 
 		$today = date("Y-m-d",strtotime("now"));
-
+		$today_d_m = date("d-m",strtotime("now"));
+		
 		// check daily stats for article 1
 		
 		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 1 AND date = '$today'"; 
@@ -75,6 +76,7 @@ class TwoExistingArt1NewlyPubArtTest extends DailyStatsCronTestBase {
 		$this->assertEquals(3,$res['total_downloads_to_date'],'total downloads');
 		
 		$this->checkEntryExistInLog("Daily stats for $today added in DB. 1 rows inserted for new attachment\(s\). 2 rows inserted for existing attachments \(gap filled: 1 day\(s\)\).");
+		$this->checkEntryExistInLog("article_3_attach_10003.mp3: 3 downloads.\r\n\r\nTotal downloads for $today_d_m: 5.");
 	}
 	
 	/**
@@ -104,7 +106,8 @@ class TwoExistingArt1NewlyPubArtTest extends DailyStatsCronTestBase {
 		$this->assertEquals(5,$count,'5 daily_stats records expected, 2 for 2 days ago and 3 for today');
 
 		$today = date("Y-m-d",strtotime("now"));
-
+		$today_d_m = date("d-m",strtotime("now"));
+		
 		// check daily stats for article 1
 		
 		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 1 AND date = '$today'"; 
@@ -139,6 +142,7 @@ class TwoExistingArt1NewlyPubArtTest extends DailyStatsCronTestBase {
 		$this->assertEquals(3,$res['total_downloads_to_date'],'total downloads');
 
 		$this->checkEntryExistInLog("Daily stats for $today added in DB. 1 rows inserted for new attachment\(s\). 2 rows inserted for existing attachments. GAP EXCEEDS 1 DAY \(gap filled: 2 day\(s\)\).");
+		$this->checkEntryExistInLog("article_3_attach_10003.mp3: 3 downloads.\r\n\r\nTotal downloads for $today_d_m: 5.");
 	}
 	
 	
@@ -169,7 +173,8 @@ class TwoExistingArt1NewlyPubArtTest extends DailyStatsCronTestBase {
 		$this->assertEquals(5,$count,'5 daily_stats records expected, 2 for 20 days ago and 3 for today');
 
 		$today = date("Y-m-d",strtotime("now"));
-
+		$today_d_m = date("d-m",strtotime("now"));
+		
 		// check daily stats for article 1
 		
 		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 1 AND date = '$today'"; 
@@ -204,6 +209,7 @@ class TwoExistingArt1NewlyPubArtTest extends DailyStatsCronTestBase {
 		$this->assertEquals(3,$res['total_downloads_to_date'],'total downloads');
 		
 		$this->checkEntryExistInLog("Daily stats for $today added in DB. 1 rows inserted for new attachment\(s\). 2 rows inserted for existing attachments. GAP EXCEEDS 1 DAY \(gap filled: 20 day\(s\)\).");
+		$this->checkEntryExistInLog("article_3_attach_10003.mp3: 3 downloads.\r\n\r\nTotal downloads for $today_d_m: 5.");
 	}
 	
 	/**
@@ -233,7 +239,8 @@ class TwoExistingArt1NewlyPubArtTest extends DailyStatsCronTestBase {
 		$this->assertEquals(3,$count,'3 daily_stats records expected, two 21 days ago and one for today for the newly published article');
 
 		$today = date("Y-m-d",strtotime("now"));
-
+		$today_d_m = date("d-m",strtotime("now"));
+		
 		// check daily stats for article 3
 		
 		$query = "SELECT * FROM #__" . $this->getDailyStatsTableName() . " WHERE article_id = 3 AND date = '$today'";
@@ -246,6 +253,7 @@ class TwoExistingArt1NewlyPubArtTest extends DailyStatsCronTestBase {
 		$this->assertEquals(3,$res['total_downloads_to_date'],'total downloads');
 
 		$this->checkEntryExistInLog("Daily stats for $today added in DB. 1 rows inserted for new attachment\(s\). 0 rows inserted for existing attachments. GAP EXCEEDS MAX INTERVAL OF 20 DAYS !");
+		$this->checkEntryExistInLog("article_3_attach_10003.mp3: 3 downloads.\r\n\r\nTotal downloads for $today_d_m: 3.");
 	}
 	
 	private function updateAllDailyStatRec($forDate) {
