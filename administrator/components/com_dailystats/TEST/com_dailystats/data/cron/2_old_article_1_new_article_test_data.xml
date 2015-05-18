@@ -1,6 +1,122 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE dataset SYSTEM "dataset.dtd">
 <dataset>
+	<table name="jos_categories">
+		<column>id</column>
+		<column>asset_id</column>
+		<column>parent_id</column>
+		<column>lft</column>
+		<column>rgt</column>
+		<column>level</column>
+		<column>path</column>
+		<column>extension</column>
+		<column>title</column>
+		<column>alias</column>
+		<column>note</column>
+		<column>description</column>
+		<column>published</column>
+		<column>checked_out</column>
+		<column>checked_out_time</column>
+		<column>access</column>
+		<column>params</column>
+		<column>metadesc</column>
+		<column>metakey</column>
+		<column>metadata</column>
+		<column>created_user_id</column>
+		<column>created_time</column>
+		<column>modified_user_id</column>
+		<column>modified_time</column>
+		<column>hits</column>
+		<column>language</column>
+		<column>version</column>
+		<row>
+			<value>1000</value> <!-- id -->
+			<value></value> <!-- asset_id -->
+			<value>135</value> <!-- parent_id -->
+			<value></value> <!-- lft -->
+			<value></value> <!-- rgt -->
+			<value>2</value> <!-- level -->
+			<value>audio/spiritualite</value> <!-- path -->
+			<value></value> <!-- extension -->
+			<value></value> <!-- title -->
+			<value></value> <!-- alias -->
+			<value></value> <!-- note -->
+			<value></value> <!-- description -->
+			<value>1</value> <!-- published -->
+			<value></value> <!-- checked_out -->
+			<value></value> <!-- checked_out_time -->
+			<value></value> <!-- access -->
+			<value></value> <!-- params -->
+			<value></value> <!-- metadesc -->
+			<value></value> <!-- metakey -->
+			<value></value> <!-- metadata -->
+			<value></value> <!-- created_user_id -->
+			<value></value> <!-- created_time -->
+			<value></value> <!-- modified_user_id -->
+			<value></value> <!-- modified_time -->
+			<value></value> <!-- hits -->
+			<value></value> <!-- language -->
+			<value></value> <!-- version -->
+		</row>
+		<row>
+			<value>10001</value> <!-- id -->
+			<value></value> <!-- asset_id -->
+			<value>1000</value> <!-- parent_id -->
+			<value></value> <!-- lft -->
+			<value></value> <!-- rgt -->
+			<value>3</value> <!-- level -->
+			<value>audio/spiritualite/fr</value> <!-- path -->
+			<value></value> <!-- extension -->
+			<value></value> <!-- title -->
+			<value></value> <!-- alias -->
+			<value></value> <!-- note -->
+			<value></value> <!-- description -->
+			<value>1</value> <!-- published -->
+			<value></value> <!-- checked_out -->
+			<value></value> <!-- checked_out_time -->
+			<value></value> <!-- access -->
+			<value></value> <!-- params -->
+			<value></value> <!-- metadesc -->
+			<value></value> <!-- metakey -->
+			<value></value> <!-- metadata -->
+			<value></value> <!-- created_user_id -->
+			<value></value> <!-- created_time -->
+			<value></value> <!-- modified_user_id -->
+			<value></value> <!-- modified_time -->
+			<value></value> <!-- hits -->
+			<value></value> <!-- language -->
+			<value></value> <!-- version -->
+		</row>
+		<row>
+			<value>10002</value> <!-- id -->
+			<value></value> <!-- asset_id -->
+			<value>1000</value> <!-- parent_id -->
+			<value></value> <!-- lft -->
+			<value></value> <!-- rgt -->
+			<value>3</value> <!-- level -->
+			<value>audio/spiritualite/anglais</value> <!-- path -->
+			<value></value> <!-- extension -->
+			<value></value> <!-- title -->
+			<value></value> <!-- alias -->
+			<value></value> <!-- note -->
+			<value></value> <!-- description -->
+			<value>1</value> <!-- published -->
+			<value></value> <!-- checked_out -->
+			<value></value> <!-- checked_out_time -->
+			<value></value> <!-- access -->
+			<value></value> <!-- params -->
+			<value></value> <!-- metadesc -->
+			<value></value> <!-- metakey -->
+			<value></value> <!-- metadata -->
+			<value></value> <!-- created_user_id -->
+			<value></value> <!-- created_time -->
+			<value></value> <!-- modified_user_id -->
+			<value></value> <!-- modified_time -->
+			<value></value> <!-- hits -->
+			<value></value> <!-- language -->
+			<value></value> <!-- version -->
+		</row>
+	</table>
 	<table name="jos_content_cron_test">
 		<column>id</column>
 		<column>asset_id</column>
@@ -33,7 +149,8 @@
 		<column>language</column>
 		<column>xreference</column>
 		<row>
-			<!--  Previously published rticle with 1 attached file and 1 daily stats rec -->
+			<!-- Previously published rticle with 1 attached file and 1 daily stats 
+				rec -->
 			<value>1</value> <!-- id -->
 			<value></value> <!-- asset_id -->
 			<value>A</value> <!-- title -->
@@ -41,7 +158,7 @@
 			<value>Introtext</value> <!-- introtext -->
 			<value>Fulltext</value> <!-- fulltext -->
 			<value>1</value> <!-- state -->
-			<value>0</value> <!-- catid -->
+			<value>10001</value> <!-- catid -->
 			<value>2009-06-22 11:17:24</value> <!-- created -->
 			<value>42</value> <!-- created_by -->
 			<value></value> <!-- created_by_alias -->
@@ -66,7 +183,8 @@
 			<value></value> <!-- xreference -->
 		</row>
 		<row>
-			<!--  Previously published article with 1 attached file and 1 daily stats rec -->
+			<!-- Previously published article with 1 attached file and 1 daily stats 
+				rec -->
 			<value>2</value> <!-- id -->
 			<value></value> <!-- asset_id -->
 			<value>B</value> <!-- title -->
@@ -74,7 +192,7 @@
 			<value>Introtext</value> <!-- introtext -->
 			<value>Fulltext</value> <!-- fulltext -->
 			<value>1</value> <!-- state -->
-			<value>0</value> <!-- catid -->
+			<value>10001</value> <!-- catid -->
 			<value>2009-06-22 11:17:24</value> <!-- created -->
 			<value>42</value> <!-- created_by -->
 			<value></value> <!-- created_by_alias -->
@@ -99,7 +217,7 @@
 			<value></value> <!-- xreference -->
 		</row>
 		<row>
-			<!--  Newly published article with 1 attached file and 0 daily stats recs -->
+			<!-- Newly published article with 1 attached file and 0 daily stats recs -->
 			<value>3</value> <!-- id -->
 			<value></value> <!-- asset_id -->
 			<value>C</value> <!-- title -->
@@ -107,7 +225,7 @@
 			<value>Introtext</value> <!-- introtext -->
 			<value>Fulltext</value> <!-- fulltext -->
 			<value>1</value> <!-- state -->
-			<value>0</value> <!-- catid -->
+			<value>10001</value> <!-- catid -->
 			<value>2009-06-22 11:17:24</value> <!-- created -->
 			<value>42</value> <!-- created_by -->
 			<value></value> <!-- created_by_alias -->
